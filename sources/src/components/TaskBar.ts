@@ -39,6 +39,7 @@ class TaskBar extends CustomElement {
         return ['items'];
     }
 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     attributeChangedCallback(property: string, oldValue: any, newValue: any) {
         const value = this.#isArrayValue.includes(property) ? newValue.split(',') : newValue;
 

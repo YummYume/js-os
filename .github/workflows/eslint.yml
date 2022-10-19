@@ -10,11 +10,6 @@
 name: ESLint
 
 on:
-  schedule:
-    - cron: '38 18 * * 3'
-  push:
-    branches:
-      - '**'
   pull_request:
     branches:
       - '**'

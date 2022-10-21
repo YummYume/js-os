@@ -30,6 +30,12 @@
       "@/*": [
         "src/*"
       ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@styles/*": [
+        "styles/*.scss"
+      ],
       "@templates/*": [
         "templates/*.html"
       ]

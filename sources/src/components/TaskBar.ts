@@ -1,5 +1,6 @@
 import htmlTemplate from '@templates/TaskBar.html?raw';
 import CustomElement from '@/CustomElement';
+import styles from '@styles/TaskBar.scss';
 
 class TaskBar extends CustomElement {
     #currentTime = new Date();
@@ -21,6 +22,7 @@ class TaskBar extends CustomElement {
     constructor() {
         super();
         this.setTemplate(htmlTemplate);
+        this.setStyle(styles);
     }
 
     connectedCallback() {

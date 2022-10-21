@@ -33,8 +33,14 @@ class CustomElement extends HTMLElement {
         this.#shadow.append(nodeOrString);
     }
 
-    resetShadow() {
-        this.#shadow.childNodes.forEach((child) => {
+    resetShadow(keepStyle = true) {
+        const nodes = [...this.#shadow.childNodes];
+
+        nodes.forEach((child) => {
+            if (keepStyle && child.nodeName === 'STYLE') {
+                return;
+            }
+
             this.#shadow.removeChild(child);
         });
     }

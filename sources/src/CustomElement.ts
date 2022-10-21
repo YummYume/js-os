@@ -42,6 +42,10 @@ class CustomElement extends HTMLElement {
     setStyle(styles: string) {
         this.#styles.textContent = styles;
     }
+
+    getStyle() {
+        return this.#styles.textContent;
+    }
 }
 
 export default CustomElement;

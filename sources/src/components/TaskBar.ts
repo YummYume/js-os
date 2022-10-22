@@ -63,7 +63,7 @@ class TaskBar extends CustomElement {
                 }
 
                 // New day
-                if (currentDateSpan &&this.#currentTime.getHours() === 0 && this.#currentTime.getMinutes() === 0 && this.#currentTime.getSeconds() === 0) {
+                if (currentDateSpan && this.#currentTime.getHours() === 0 && this.#currentTime.getMinutes() === 0 && this.#currentTime.getSeconds() === 0) {
                     currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
                 }
             }, 1000);

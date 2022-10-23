@@ -1,9 +1,11 @@
 class CustomElement extends HTMLElement {
     #shadow = this.attachShadow({ mode : 'closed' });
     #template = document.createDocumentFragment();
+    #styles = document.createElement('style');
 
     constructor() {
         super();
+        this.#shadow.append(this.#styles);
     }
 
     setTemplate(templateStringOrNode: string | Node) {
@@ -31,10 +33,24 @@ class CustomElement extends HTMLElement {
         this.#shadow.append(nodeOrString);
     }
 
-    resetShadow() {
-        this.#shadow.childNodes.forEach((child) => {
+    resetShadow(keepStyle = true) {
+        const nodes = [...this.#shadow.childNodes];
+
+        nodes.forEach((child) => {
+            if (keepStyle && child.nodeName === 'STYLE') {
+                return;
+            }
+
             this.#shadow.removeChild(child);
         });
+    }
+
+    setStyle(styles: string) {
+        this.#styles.textContent = styles;
+    }
+
+    getStyle() {
+        return this.#styles.textContent;
     }
 }
 

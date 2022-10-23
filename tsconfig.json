@@ -38,6 +38,9 @@
       ],
       "@templates/*": [
         "templates/*.html"
+      ],
+      "@utils/*": [
+        "utils/*"
       ]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */

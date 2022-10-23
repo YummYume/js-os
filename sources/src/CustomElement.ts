@@ -1,6 +1,7 @@
+import { removeChildNodes } from '@utils/removeChildFromElement';
+
 class CustomElement extends HTMLElement {
     #shadow = this.attachShadow({ mode : 'closed' });
-    #template = document.createDocumentFragment();
     #styles = document.createElement('style');
     #arrayValues: Array<string> = [];
 
@@ -10,40 +11,28 @@ class CustomElement extends HTMLElement {
     }
 
     setTemplate(templateStringOrNode: string | Node) {
-        this.#template = document.createDocumentFragment();
+        const template = document.createDocumentFragment();
 
         if (templateStringOrNode instanceof Node) {
-            this.#template.append(templateStringOrNode);
+            template.appendChild(templateStringOrNode);
+        } else {
+            const parser = new DOMParser();
+            const parsedTemplate = parser.parseFromString(templateStringOrNode, 'text/html');
 
-            return;
+            parsedTemplate.body.childNodes.forEach((child) => {
+                template.appendChild(child);
+            });
         }
 
-        const parser = new DOMParser();
-        const template =  parser.parseFromString(templateStringOrNode, 'text/html');
-
-        template.body.childNodes.forEach((child) => {
-            this.#template.appendChild(child);
-        });
-    }
-
-    getTemplate(): DocumentFragment {
-        return this.#template;
-    }
-
-    appendToShadow(nodeOrString: string | Node) {
-        this.#shadow.append(nodeOrString);
+        this.#shadow.append(template);
     }
 
     resetShadow(keepStyle = true) {
-        const nodes = [...this.#shadow.childNodes];
+        removeChildNodes(this.#shadow, keepStyle ? ['STYLE'] : []);
+    }
 
-        nodes.forEach((child) => {
-            if (keepStyle && child.nodeName === 'STYLE') {
-                return;
-            }
-
-            this.#shadow.removeChild(child);
-        });
+    getShadow() {
+        return this.#shadow;
     }
 
     setStyle(styles: string) {

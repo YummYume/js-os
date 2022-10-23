@@ -1,4 +1,5 @@
 import CustomElement from '@/CustomElement';
+
 import htmlTemplate from '@templates/components/TaskBar.html?raw';
 import styles from '@styles/components/TaskBar.scss';
 
@@ -6,11 +7,11 @@ class TaskBar extends CustomElement {
     #currentTime = new Date();
     #currentTimeCallback: number | undefined;
     #intlTimeFormat = new Intl.DateTimeFormat(
-        'fr',
+        'en',
         { hour: 'numeric', minute: 'numeric', hour12: false }
     );
     #intlDateFormat = new Intl.DateTimeFormat(
-        'fr',
+        'en',
         { day: '2-digit', month: 'long', year: 'numeric' }
     );
 
@@ -28,7 +29,7 @@ class TaskBar extends CustomElement {
             throw new Error(`Expected an array for attribute 'items' but received ${typeof this.items}.`);
         }
 
-        const template = this.getTemplate();
+        const template = this.getShadow();
         const tasksContainer = template.querySelector('#tasks');
         const infoContainer = template.querySelector('#info');
 
@@ -66,8 +67,6 @@ class TaskBar extends CustomElement {
                 }
             }, 1000);
         }
-
-        this.appendToShadow(template);
     }
 
     disconnectedCallback() {

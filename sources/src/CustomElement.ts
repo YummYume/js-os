@@ -2,6 +2,7 @@ class CustomElement extends HTMLElement {
     #shadow = this.attachShadow({ mode : 'closed' });
     #template = document.createDocumentFragment();
     #styles = document.createElement('style');
+    #isArrayValue: Array<string> = [];
 
     constructor() {
         super();
@@ -51,6 +52,31 @@ class CustomElement extends HTMLElement {
 
     getStyle() {
         return this.#styles.textContent;
+    }
+
+    addArrayValues(arrayValues: Array<string> | string) {
+        const values = Array.isArray(arrayValues) ? arrayValues : [arrayValues];
+
+        this.#isArrayValue = [...this.#isArrayValue, ...values];
+    }
+
+    removeArrayValues(arrayValues: Array<string> | string) {
+        this.#isArrayValue = this.#isArrayValue.filter(v => Array.isArray(arrayValues) ? arrayValues.includes(v) : v === v);
+    }
+
+    getArrayValues() {
+        return this.#isArrayValue;
+    }
+
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    attributeChangedCallback(property: string, oldValue: any, newValue: any) {
+        const value = this.#isArrayValue.includes(property) ? newValue.split(',') : newValue;
+
+        if (oldValue === value) {
+            return;
+        }
+
+        this[property as keyof this] = value;
     }
 }
 

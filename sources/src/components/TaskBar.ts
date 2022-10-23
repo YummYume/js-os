@@ -1,6 +1,6 @@
-import htmlTemplate from '@templates/TaskBar.html?raw';
 import CustomElement from '@/CustomElement';
-import styles from '@styles/TaskBar.scss';
+import htmlTemplate from '@templates/components/TaskBar.html?raw';
+import styles from '@styles/components/TaskBar.scss';
 
 class TaskBar extends CustomElement {
     #currentTime = new Date();
@@ -13,14 +13,12 @@ class TaskBar extends CustomElement {
         'fr',
         { day: '2-digit', month: 'long', year: 'numeric' }
     );
-    items = [];
 
-    #isArrayValue = [
-        'items'
-    ];
+    items = [];
 
     constructor() {
         super();
+        this.addArrayValues('items');
         this.setTemplate(htmlTemplate);
         this.setStyle(styles);
     }
@@ -82,13 +80,7 @@ class TaskBar extends CustomElement {
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     attributeChangedCallback(property: string, oldValue: any, newValue: any) {
-        const value = this.#isArrayValue.includes(property) ? newValue.split(',') : newValue;
-
-        if (oldValue === value) {
-            return;
-        }
-
-        this[property as keyof this] = value;
+        super.attributeChangedCallback(property, oldValue, newValue);
     }
 }
 

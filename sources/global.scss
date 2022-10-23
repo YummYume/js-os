@@ -1,3 +1,5 @@
+@import "@styles/variables.scss";
+
 html,
 body,
 #root {
@@ -12,6 +14,10 @@ body,
 #root {
     display: flex;
     flex-direction: column;
+
+    @media screen and (max-width: $mobile-breakpoint) {
+        flex-direction: column-reverse;
+    }
 }
 
 #desktop {

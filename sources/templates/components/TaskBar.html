@@ -1,10 +1,17 @@
 <div id="container">
     <div id="logo">
-        <img height="32" width="32" src="/assets/logo.svg" alt="Afficher/cacher le menu principal" loading="lazy" />
+        <img height="32" width="32" src="/assets/logo.svg" alt="Show/hide main menu" loading="lazy" />
     </div>
     <div id="tasks"></div>
     <div id="info">
-        <span id="current-time"></span>
-        <span id="current-date"></span>
+        <div id="info-icons">
+            <div id="info-battery-status">
+                <battery-icon></battery-icon>
+            </div>
+        </div>
+        <div id="info-datetime">
+            <span id="current-time"></span>
+            <span id="current-date"></span>
+        </div>
     </div>
 </div>

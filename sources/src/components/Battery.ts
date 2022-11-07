@@ -1,8 +1,7 @@
 import CustomElement from '@/CustomElement';
-import { removeChildNodes } from '@utils/removeChildFromElement';
+import { removeChildNodes } from '@utils/removeChildNodes';
 
 import htmlTemplate from '@templates/components/Battery.html?raw';
-import styles from '@styles/components/Battery.scss';
 
 class Battery extends CustomElement {
     #batteryManager: BatteryManager | null = null;
@@ -10,7 +9,6 @@ class Battery extends CustomElement {
     constructor() {
         super();
         this.setTemplate(htmlTemplate);
-        this.setStyle(styles);
     }
 
     async connectedCallback() {

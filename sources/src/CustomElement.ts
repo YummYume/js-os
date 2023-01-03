@@ -1,4 +1,4 @@
-import { removeChildNodes } from '@utils/removeChildFromElement';
+import { removeChildNodes } from '@utils/removeChildNodes';
 
 class CustomElement extends HTMLElement {
     #shadow = this.attachShadow({ mode : 'closed' });

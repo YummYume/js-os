@@ -61,8 +61,8 @@ class TaskBar extends CustomElement {
                     currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
                 }
 
-                // New day
-                if (currentDateSpan && this.#currentTime.getHours() === 0 && this.#currentTime.getMinutes() === 0 && this.#currentTime.getSeconds() === 0) {
+                // Check for new day
+                if (currentDateSpan && this.#currentTime.getSeconds() === 0) {
                     currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
                 }
             }, 1000);
@@ -75,11 +75,6 @@ class TaskBar extends CustomElement {
 
     static get observedAttributes() {
         return ['items'];
-    }
-
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    attributeChangedCallback(property: string, oldValue: any, newValue: any) {
-        super.attributeChangedCallback(property, oldValue, newValue);
     }
 }
 

@@ -7,7 +7,9 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended"
     ],
-    "overrides": [],
+    "ignorePatterns": [
+        "**/node_modules/*"
+    ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -19,7 +21,7 @@
     "rules": {
         "indent": [
             "error",
-            4
+            2
         ],
         "linebreak-style": [
             "error",
@@ -33,8 +35,5 @@
             "error",
             "always"
         ]
-    },
-    "ignorePatterns": [
-        "**/node_modules/*"
-    ]
+    }
 }

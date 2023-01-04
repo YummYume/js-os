@@ -1,3 +1,6 @@
+@use "@styles/reset.scss";
+@use "@styles/global.scss";
+
 @import "@styles/variables.scss";
 
 #container {
@@ -23,6 +26,10 @@
 
     @media screen and (max-width: $mobile-breakpoint) {
         display: none;
+    }
+
+    .icon {
+        stroke: #fff;
     }
 }
 

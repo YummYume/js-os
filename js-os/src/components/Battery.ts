@@ -1,7 +1,7 @@
+import htmlTemplate from '@templates/components/Battery.html?raw';
+
 import CustomElement from '@/CustomElement';
 import { removeChildNodes } from '@utils/removeChildNodes';
-
-import htmlTemplate from '@templates/components/Battery.html?raw';
 
 class Battery extends CustomElement {
   #batteryManager: BatteryManager | null = null;
@@ -32,10 +32,10 @@ class Battery extends CustomElement {
 
   onBatteryChange() {
     const template = this.getShadow();
-    const batteryIcons = template.querySelector('#battery-icons') as HTMLTemplateElement;
+    const batteryIcons = template.querySelector('#battery-icons');
     const batteryStatus = template.querySelector('#current-battery-status');
 
-    if (batteryIcons?.content && batteryStatus) {
+    if (batteryIcons && batteryIcons instanceof HTMLTemplateElement && batteryStatus) {
       const batteryEmptyIcon = batteryIcons.content.querySelector('#battery-empty');
       const batteryHalfIcon = batteryIcons.content.querySelector('#battery-half');
       const batteryFullIcon = batteryIcons.content.querySelector('#battery-full');

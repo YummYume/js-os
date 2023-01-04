@@ -1,6 +1,5 @@
 import Application from '@/Application';
-
-import APPLICATION from '../../constants/application';
+import APPLICATION from '@constants/application';
 
 import type { Application as ApplicationType } from 'types/application';
 

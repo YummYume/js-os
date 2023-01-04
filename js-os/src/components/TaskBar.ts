@@ -43,6 +43,10 @@ class TaskBar extends CustomElement {
           const text = document.createElement('span');
 
           navItem.classList.add('icon', 'tooltip');
+          navItem.ariaLabel = `open ${ application.name }`;
+          navItem.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('open-app', { detail: application.name }));
+          });
           text.classList.add('tooltip-content');
           text.textContent = application.name;
           navItem.appendChild(text);

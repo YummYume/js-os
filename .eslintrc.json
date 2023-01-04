@@ -5,7 +5,9 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript"
     ],
     "ignorePatterns": [
         "**/node_modules/*"
@@ -13,27 +15,252 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
+        "project": [
+            "./tsconfig.json"
+        ],
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "import"
     ],
     "rules": {
-        "indent": [
+        "@typescript-eslint/indent": [
             "error",
             2
+        ],
+        "@typescript-eslint/no-explicit-any": [
+            "warn"
+        ],
+        "@typescript-eslint/no-extra-semi": [
+            "error"
+        ],
+        "@typescript-eslint/no-unnecessary-condition": [
+            "error"
+        ],
+        "@typescript-eslint/no-unnecessary-type-arguments": [
+            "error"
+        ],
+        "@typescript-eslint/no-unnecessary-type-assertion": [
+            "error"
+        ],
+        "@typescript-eslint/no-unnecessary-type-constraint": [
+            "error"
+        ],
+        "@typescript-eslint/semi": [
+            "error",
+            "always"
+        ],
+        "@typescript-eslint/space-infix-ops": [
+            "error"
+        ],
+        "array-bracket-spacing": [
+            "error",
+            "never"
+        ],
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "comma-spacing": [
+            "error",
+            {
+                "after": true,
+                "before": false
+            }
+        ],
+        "eol-last": [
+            "error",
+            "always"
+        ],
+        "import/first": [
+            "error"
+        ],
+        "import/newline-after-import": [
+            "error",
+            {
+                "count": 1
+            }
+        ],
+        "import/no-absolute-path": [
+            "error"
+        ],
+        "import/no-duplicates": [
+            "error",
+            {
+                "considerQueryString": true
+            }
+        ],
+        "import/no-relative-packages": [
+            "error"
+        ],
+        "import/no-unresolved": [
+            "error",
+            {
+                "ignore": [
+                    "\\.scss$",
+                    "\\.html\\?raw$"
+                ]
+            }
+        ],
+        "import/no-useless-path-segments": [
+            "error",
+            {
+                "noUselessIndex": true
+            }
+        ],
+        "import/order": [
+            "error",
+            {
+                "alphabetize": {
+                    "caseInsensitive": false,
+                    "order": "asc"
+                },
+                "groups": [
+                    "external",
+                    "builtin",
+                    "internal",
+                    "sibling",
+                    "parent",
+                    "index",
+                    "object",
+                    "type"
+                ],
+                "newlines-between": "always",
+                "pathGroups": [
+                    {
+                        "group": "internal",
+                        "pattern": "$(src|component|server|store)/*"
+                    },
+                    {
+                        "group": "type",
+                        "pattern": "$type/*"
+                    }
+                ]
+            }
+        ],
+        "indent": "off",
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true
+            }
         ],
         "linebreak-style": [
             "error",
             "unix"
         ],
-        "quotes": [
-            "error",
-            "single"
+        "max-len": [
+            "warn",
+            {
+                "code": 150,
+                "ignoreComments": true,
+                "ignoreRegExpLiterals": true,
+                "ignoreStrings": true,
+                "ignoreTemplateLiterals": true,
+                "ignoreUrls": true
+            }
         ],
-        "semi": [
+        "no-console": [
+            "warn"
+        ],
+        "no-else-return": [
+            "error"
+        ],
+        "no-empty": [
+            "error"
+        ],
+        "no-extra-semi": "off",
+        "no-invalid-regexp": [
+            "error"
+        ],
+        "no-multi-assign": [
+            "error"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxBOF": 0,
+                "maxEOF": 0
+            }
+        ],
+        "no-new-object": [
+            "error"
+        ],
+        "no-useless-return": [
+            "error"
+        ],
+        "object-curly-newline": [
+            "error",
+            {
+                "consistent": true
+            }
+        ],
+        "object-curly-spacing": [
             "error",
             "always"
+        ],
+        "one-var": [
+            "error",
+            "never"
+        ],
+        "padding-line-between-statements": [
+            "error",
+            {
+                "blankLine": "always",
+                "next": "return",
+                "prev": "var"
+            }
+        ],
+        "prefer-arrow-callback": [
+            "off"
+        ],
+        "quote-props": [
+            "error",
+            "consistent-as-needed"
+        ],
+        "quotes": [
+            "error",
+            "single",
+            {
+                "allowTemplateLiterals": true,
+                "avoidEscape": true
+            }
+        ],
+        "semi": "off",
+        "semi-spacing": [
+            "error",
+            {
+                "after": true,
+                "before": false
+            }
+        ],
+        "space-infix-ops": [
+            "error"
         ]
+    },
+    "settings": {
+        "import/ignore": [
+            ".(scss|html?raw)"
+        ],
+        "import/parsers": {
+            "@typescript-eslint/parser": [
+                ".ts",
+                ".tsx",
+                ".cts",
+                ".mts"
+            ],
+            "espree": [
+                ".js",
+                "jsx",
+                ".cjs",
+                ".mjs"
+            ]
+        },
+        "import/resolver": {
+            "node": false,
+            "typescript": true
+        }
     }
 }

@@ -2,13 +2,15 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "lint": "eslint ./sources vite.config.js",
+    "lint": "eslint ./js-os vite.config.js",
     "prepare": "husky install"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.40.1",
-    "@typescript-eslint/parser": "^5.40.1",
+    "@typescript-eslint/parser": "^5.48.0",
     "eslint": "^8.25.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
     "husky": "^8.0.0",
     "sass": "^1.55.0",
     "typescript": "^4.8.4",

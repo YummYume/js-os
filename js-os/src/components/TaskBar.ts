@@ -1,18 +1,19 @@
-import CustomElement from '@/CustomElement';
-
-import htmlTemplate from '@templates/components/TaskBar.html?raw';
 import styles from '@styles/components/TaskBar.scss';
+import htmlTemplate from '@templates/components/TaskBar.html?raw';
+
+import CustomElement from '@/CustomElement';
+import { getApplication } from '@constants/application';
 
 class TaskBar extends CustomElement {
   #currentTime = new Date();
   #currentTimeCallback: number | undefined;
   #intlTimeFormat = new Intl.DateTimeFormat(
     'en',
-    { hour: 'numeric', minute: 'numeric', hour12: false }
+    { hour: 'numeric', minute: 'numeric', hour12: false },
   );
   #intlDateFormat = new Intl.DateTimeFormat(
     'en',
-    { day: '2-digit', month: 'long', year: 'numeric' }
+    { day: '2-digit', month: 'long', year: 'numeric' },
   );
 
   items: string[] = [];
@@ -35,10 +36,20 @@ class TaskBar extends CustomElement {
 
     if (tasksContainer) {
       this.items.forEach((item) => {
-        const navItem = document.createElement('span');
-        navItem.textContent = item;
+        const application = getApplication(item);
 
-        tasksContainer.appendChild(navItem);
+        if (application) {
+          const navItem = document.createElement('button');
+          const text = document.createElement('span');
+
+          navItem.classList.add('icon', 'tooltip');
+          text.classList.add('tooltip-content');
+          text.textContent = application.name;
+          navItem.appendChild(text);
+          text.insertAdjacentHTML('afterend', application.icon);
+
+          tasksContainer.appendChild(navItem);
+        }
       });
     }
 
@@ -57,9 +68,7 @@ class TaskBar extends CustomElement {
       this.#currentTimeCallback = setInterval(() => {
         this.#currentTime = new Date();
 
-        if (currentTimeSpan) {
-          currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
-        }
+        currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
 
         // Check for new day
         if (currentDateSpan && this.#currentTime.getSeconds() === 0) {

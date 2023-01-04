@@ -1,6 +1,6 @@
 import APPLICATION from 'constants/application';
 
-export type ApplicationName = typeof APPLICATION[keyof typeof APPLICATION];
+export type ApplicationName = typeof APPLICATION[keyof typeof APPLICATION]['name'];
 
 export interface Application {
   name: ApplicationName;

@@ -1,7 +1,7 @@
+import htmlTemplate from '@templates/components/Network.html?raw';
+
 import CustomElement from '@/CustomElement';
 import { removeChildNodes } from '@utils/removeChildNodes';
-
-import htmlTemplate from '@templates/components/Network.html?raw';
 
 class Network extends CustomElement {
   #networkInformation: NetworkInformation | null = null;
@@ -28,10 +28,10 @@ class Network extends CustomElement {
 
   onNetworkChange() {
     const template = this.getShadow();
-    const networkIcons = template.querySelector('#network-icons') as HTMLTemplateElement;
+    const networkIcons = template.querySelector('#network-icons');
     const networkStatus = template.querySelector('#current-network-status');
 
-    if (this.#networkInformation && networkIcons?.content && networkStatus) {
+    if (this.#networkInformation && networkIcons && networkIcons instanceof HTMLTemplateElement && networkStatus) {
       removeChildNodes(networkStatus);
 
       if (this.#networkInformation.type === 'cellular') {
@@ -55,7 +55,7 @@ class Network extends CustomElement {
           if (networkHighIcon) {
             networkStatus.append(networkHighIcon.cloneNode(true));
           }
-        } else if (this.#networkInformation.effectiveType === '4g') {
+        } else {
           if (networkVeryHighIcon) {
             networkStatus.append(networkVeryHighIcon.cloneNode(true));
           }

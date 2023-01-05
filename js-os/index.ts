@@ -17,6 +17,12 @@ document.body.appendChild(node);
 node.insertAdjacentHTML('beforebegin', App);
 node.remove();
 
+window.addEventListener('open-app', (e) => {
+  if (e instanceof CustomEvent) {
+    alert(e.detail);
+  } 
+});
+
 const loading = document.querySelector('#loading');
 
 if (loading) {

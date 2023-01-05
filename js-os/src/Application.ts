@@ -2,8 +2,7 @@ import styles from '@styles/Window.scss';
 import htmlTemplate from '@templates/Window.html?raw';
 
 import CustomElement from '@/CustomElement';
-
-import APPLICATION from '../constants/application';
+import APPLICATION from '@constants/application';
 
 import type { ApplicationEventProps, Application as ApplicationType } from 'types/application';
 

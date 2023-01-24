@@ -1,7 +1,28 @@
+@import "@styles/variables.scss";
+
 .window {
-    display: block;
-    border: 2rem;
-    border-color: grey;
     position: fixed;
+    top: 25%;
+    left: 25%;
     resize: both;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+
+    &-toolbar {
+        background-color: $window-color;
+        border: 0.2rem solid $window-color;
+        border-bottom: none;
+        border-radius: 10px 10px 0 0;
+        height: 2rem;
+    }
+
+    &-content {
+        border: 0.2rem solid $window-color;
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+        flex-grow: 1;
+        overflow: auto;
+    }
 }

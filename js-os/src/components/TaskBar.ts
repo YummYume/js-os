@@ -4,6 +4,8 @@ import htmlTemplate from '@templates/components/TaskBar.html?raw';
 import CustomElement from '@/CustomElement';
 import { getApplication } from '@constants/application';
 
+import type { ApplicationEventProps } from '@defs/application';
+
 class TaskBar extends CustomElement {
   #currentTime = new Date();
   #currentTimeCallback: number | undefined;
@@ -45,7 +47,9 @@ class TaskBar extends CustomElement {
           navItem.classList.add('icon', 'tooltip');
           navItem.ariaLabel = `open ${ application.name }`;
           navItem.addEventListener('click', () => {
-            window.dispatchEvent(new CustomEvent('open-app', { detail: application.name }));
+            window.dispatchEvent(new CustomEvent<ApplicationEventProps>('open-app', { detail: {
+              name: application.name,
+            } }));
           });
           text.classList.add('tooltip-content');
           text.textContent = application.name;

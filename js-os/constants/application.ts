@@ -1,10 +1,4 @@
-export interface ApplicationList {
-  [key: string]: {
-    name: 'calculator',
-    component: 'calculator-app',
-    icon: string
-  }
-}
+import type { ApplicationList } from '@defs/application';
 
 const APPLICATION: ApplicationList = {
   CALCULATOR: {

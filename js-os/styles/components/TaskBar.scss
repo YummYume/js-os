@@ -24,9 +24,9 @@
     align-items: center;
     gap: 5px;
 
-    @media screen and (max-width: $mobile-breakpoint) {
-        display: none;
-    }
+    // @media screen and (max-width: $mobile-breakpoint) {
+    //     display: none;
+    // }
 
     .icon {
         stroke: #fff;

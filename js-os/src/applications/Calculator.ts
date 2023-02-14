@@ -43,7 +43,7 @@ class Calculator extends Application implements ApplicationType {
 
   callNumber(event: Event) {
     if (event.target instanceof HTMLButtonElement) {
-      console.log(event.target.dataset.calcNumber);
+      //console.log(event.target.dataset.calcNumber);
     }
   }
 

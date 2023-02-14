@@ -8,7 +8,11 @@ import type { Application as ApplicationType } from 'types/application';
 
 class Calculator extends Application implements ApplicationType {
   name = APPLICATION.CALCULATOR.name;
+
+  #pivotNumber = ''; 
   #numbers: NodeListOf<Element> | [] = [];
+  #operators: NodeListOf<Element> | [] = [];
+  #result: HTMLElement | null = null;
 
   constructor() {
     super();
@@ -35,21 +39,49 @@ class Calculator extends Application implements ApplicationType {
   }
 
   calculate(template: Element) {
+    this.#result = template.querySelector('[data-calc="result"]');
     this.#numbers = template.querySelectorAll('[data-calc-number]');
+    this.#operators = template.querySelectorAll('[data-calc-operator]');
+
     this.#numbers.forEach((number) => {
-      number.addEventListener('click', this.callNumber);
+      number.addEventListener('click', this.callNumber.bind(this));
+    });
+    this.#operators.forEach((number) => {
+      number.addEventListener('click', this.callOperator.bind(this));
     });
   }
 
   callNumber(event: Event) {
     if (event.target instanceof HTMLButtonElement) {
-      //console.log(event.target.dataset.calcNumber);
+      if (this.#result) {
+        if (!this.#result.textContent) {
+          this.#result.textContent = '' + event.target.dataset.calcNumber;
+        } else {
+          if (this.#result.textContent.length <= 15)
+            this.#result.textContent = this.#result.textContent + event.target.dataset.calcNumber;
+        }
+      }
+    }
+  }
+
+  callOperator(event: Event) {
+    if (event.target instanceof HTMLButtonElement) {
+      switch (event.target.dataset.calcOperator) {
+        case 'clear':
+          if (this.#result) {
+            this.#result.textContent = '';
+          }
+          break;
+      }
     }
   }
 
   stop() {
     this.#numbers.forEach((number) => {
       number.removeEventListener('click', this.callNumber);
+    });
+    this.#operators.forEach((number) => {
+      number.addEventListener('click', this.callOperator);
     });
   }
 }

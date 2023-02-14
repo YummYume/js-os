@@ -9,16 +9,22 @@
     &-toolbar {
         display: flex;
         justify-content: end;
-        background-color: $window-color;
-        border: 0.2rem solid $window-color;
+        background-color: $window-bg-blur;
+        border: 0.2rem solid $window-border-blur;
         border-bottom: none;
         border-radius: 10px 10px 0 0;
+        box-shadow: 0 4px 30px $window-shadow-blur;
+        backdrop-filter: blur(5px);
         height: 2rem;
         padding: 0.2rem;
+        -webkit-backdrop-filter: blur(5px);
     }
 
     &-content {
-        border: 0.2rem solid $window-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0.2rem solid $window-border-blur;
         border-top: none;
         border-radius: 0 0 10px 10px;
         flex-grow: 1;

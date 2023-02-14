@@ -1,6 +1,11 @@
 import type { ApplicationList } from '@defs/application';
 
 const APPLICATION: ApplicationList = {
+  APPLICATION: {
+    name: 'application',
+    component: 'application-app',
+    icon: '',
+  },
   CALCULATOR: {
     name: 'calculator',
     component: 'calculator-app',

@@ -14,7 +14,7 @@ customElements.define('network-icon', Network);
 customElements.define('calculator-app', Calculator);
 
 const node = document.createElement('div');
-const applications: ApplicationComponent[] = [];
+let applications: ApplicationComponent[] = [];
 
 document.body.appendChild(node);
 
@@ -38,6 +38,22 @@ window.addEventListener('open-app', (e) => {
       root.append(applicationComponent);
       applications.push(application.component);
     }
+  }
+});
+
+window.addEventListener('close-app', (e) => {
+  if (e instanceof CustomEvent) {
+    const event = e as CustomEvent<ApplicationEventProps>;
+    const application = getApplication(event.detail.name);
+
+    if (application && applications.length > 0) {
+      applications.forEach((app) => {
+        const appDom = document.querySelector(app);
+        appDom?.remove();
+      });
+    }
+
+    applications = [];
   }
 });
 

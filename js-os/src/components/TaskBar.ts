@@ -47,7 +47,8 @@ class TaskBar extends CustomElement {
           navItem.classList.add('icon', 'tooltip');
           navItem.ariaLabel = `open ${ application.name }`;
           navItem.addEventListener('click', () => {
-            window.dispatchEvent(new CustomEvent<ApplicationEventProps>('open-app', { detail: {
+            const app = document.querySelector(application.component);
+            window.dispatchEvent(new CustomEvent<ApplicationEventProps>( app ? 'close-app' : 'open-app', { detail: {
               name: application.name,
             } }));
           });

@@ -1,9 +1,13 @@
 import { removeChildNodes } from '@utils/removeChildNodes';
 
+type callback = () => void;
+
 class CustomElement extends HTMLElement {
   #shadow = this.attachShadow({ mode : 'closed' });
   #styles = document.createElement('style');
   #arrayValues: string[] = [];
+  #run: callback[] = [];
+  #stop: callback[] = [];
 
   constructor() {
     super();
@@ -27,6 +31,18 @@ class CustomElement extends HTMLElement {
     this.#shadow.append(template);
   }
 
+  convertStringToNode(templateString: string): ChildNode | null {
+    let template: ChildNode | null = null;
+
+    const parser = new DOMParser();
+    const { body: { childNodes } } = parser.parseFromString(templateString, 'text/html');
+    childNodes.forEach((child) => {
+      template = child;
+    });
+
+    return template;
+  }
+
   resetShadow(keepStyle = true) {
     removeChildNodes(this.#shadow, keepStyle ? ['STYLE'] : []);
   }
@@ -37,6 +53,10 @@ class CustomElement extends HTMLElement {
 
   setStyle(styles: string) {
     this.#styles.textContent = styles;
+  }
+
+  appendStyle(styles: string) {
+    this.#styles.textContent = `${this.#styles.textContent} ${styles}`;
   }
 
   getStyle() {
@@ -70,6 +90,23 @@ class CustomElement extends HTMLElement {
     }
 
     this[property as keyof this] = value;
+  }
+
+  setupApp({ cbRun, cbStop }: { cbRun?: callback, cbStop?: callback }) {
+    this.#run = cbRun ? [...this.#run, cbRun] : this.#run;
+    this.#stop = cbStop ? [...this.#stop, cbStop] : this.#stop;
+  }
+
+  runApp() {
+    this.#run.forEach((callback) => {
+      callback();
+    });
+  }
+
+  stopApp() {
+    this.#stop.forEach((callback) => {
+      callback();
+    });
   }
 }
 

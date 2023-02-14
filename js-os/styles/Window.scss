@@ -2,20 +2,19 @@
 
 .window {
     position: fixed;
-    top: 25%;
-    left: 25%;
     resize: both;
-    width: 50%;
-    height: 50%;
     display: flex;
     flex-direction: column;
 
     &-toolbar {
+        display: flex;
+        justify-content: end;
         background-color: $window-color;
         border: 0.2rem solid $window-color;
         border-bottom: none;
         border-radius: 10px 10px 0 0;
         height: 2rem;
+        padding: 0.2rem;
     }
 
     &-content {
@@ -24,5 +23,62 @@
         border-radius: 0 0 10px 10px;
         flex-grow: 1;
         overflow: auto;
+    }
+}
+
+.fullscreen {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.windowed {
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-left: 0.25rem;
+    color: #fff;
+    border-radius: 0.5rem;
+    border: none;
+    transition: background-color 0.1s ease;
+
+    &-blue {
+        background-color: $blue;
+        &:hover {
+            background-color: darken($blue, 10%);
+        }
+    }
+
+    &-yellow {
+        background-color: $yellow;
+        &:hover {
+            background-color: darken($yellow, 10%);
+        }
+    }
+
+    &-red {
+        background-color: $red;
+        &:hover {
+            background-color: darken($red, 10%);
+          }
+    }
+}
+
+@media (max-width: $mobile-breakpoint) {
+    .window {
+        top: 6%;
+        left: 0;
+        width: 100%;
+        height: 95vh;
     }
 }

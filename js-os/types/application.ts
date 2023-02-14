@@ -1,6 +1,6 @@
-export type ApplicationName = 'calculator';
+export type ApplicationName = 'application' | 'calculator';
 
-export type ApplicationComponent = 'calculator-app';
+export type ApplicationComponent = 'application-app' | 'calculator-app';
 
 export interface Application {
   name: ApplicationName;

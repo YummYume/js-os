@@ -1,3 +1,6 @@
+@use "@styles/reset.scss";
+@use "@styles/global.scss";
+
 @import "@styles/variables.scss";
 
 .window {
@@ -5,6 +8,9 @@
     resize: both;
     display: flex;
     flex-direction: column;
+    animation: open-window 0.1s ease-in forwards;
+    width: max-content;
+    height: max-content;
 
     &-toolbar {
         display: flex;
@@ -18,6 +24,8 @@
         height: 2rem;
         padding: 0.2rem;
         -webkit-backdrop-filter: blur(5px);
+
+        cursor: pointer;
     }
 
     &-content {
@@ -29,6 +37,7 @@
         border-radius: 0 0 10px 10px;
         flex-grow: 1;
         overflow: auto;
+        background-color: #fff;
     }
 }
 
@@ -41,10 +50,43 @@
 
 .windowed {
     top: 25%;
-    left: 25%;
-    width: 50%;
-    height: 50%;
+    left: 43%;
 }
+
+.stash {
+    animation: close-window 0.1s ease-out forwards;
+}
+
+@keyframes close-window {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, 50%) scale(0.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate(-100%, 100%) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes open-window {
+    0% {
+        transform: translate(-100%, 100%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, 50%) scale(0.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+}
+  
 
 .btn {
     display: inline-block;
@@ -57,6 +99,7 @@
     border-radius: 0.5rem;
     border: none;
     transition: background-color 0.1s ease;
+    cursor: pointer;
 
     &-blue {
         background-color: $blue;

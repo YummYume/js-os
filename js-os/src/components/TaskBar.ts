@@ -19,6 +19,7 @@ class TaskBar extends CustomElement {
   );
 
   items: string[] = [];
+  regex = /(?<=\()[^)]*(?=\))/;
 
   constructor() {
     super();
@@ -38,20 +39,43 @@ class TaskBar extends CustomElement {
 
     if (tasksContainer) {
       this.items.forEach((item) => {
-        const application = getApplication(item);
+      
+        // System for class item
+        const match = this.regex.exec(item);
+        const classItem = match ? match[0].split(';') : [];
+
+        const application = getApplication(item.split('|')[0]);
 
         if (application) {
           const navItem = document.createElement('button');
           const text = document.createElement('span');
 
-          navItem.classList.add('icon', 'tooltip');
+          navItem.classList.add('icon', 'tooltip', ...classItem);
           navItem.ariaLabel = `open ${ application.name }`;
           navItem.addEventListener('click', () => {
             const app = document.querySelector(application.component);
-            window.dispatchEvent(new CustomEvent<ApplicationEventProps>( app ? 'close-app' : 'open-app', { detail: {
+            window.dispatchEvent(new CustomEvent<ApplicationEventProps>( app ? 'stash-window' : 'open-window', { detail: {
               name: application.name,
             } }));
           });
+          
+          window.addEventListener('close-window', (e: Event) => {
+            if (e instanceof CustomEvent) {
+              const event = e as CustomEvent<ApplicationEventProps>;
+              if (event.detail.name === application.name) {
+                navItem.classList.contains('icon-active') ? navItem.classList.remove('icon-active') : null;
+              }
+            }
+          });
+          window.addEventListener('open-window', (e: Event) => {
+            if (e instanceof CustomEvent) {
+              const event = e as CustomEvent<ApplicationEventProps>;
+              if (event.detail.name === application.name) {
+                !navItem.classList.contains('icon-active') ? navItem.classList.add('icon-active') : null;
+              }
+            }
+          });
+
           text.classList.add('tooltip-content');
           text.textContent = application.name;
           navItem.appendChild(text);
@@ -60,8 +84,9 @@ class TaskBar extends CustomElement {
           tasksContainer.appendChild(navItem);
         }
       });
-    }
 
+    }
+    
     const currentTimeSpan = infoContainer?.querySelector('#current-time');
     const currentDateSpan = infoContainer?.querySelector('#current-date');
 

@@ -29,7 +29,7 @@ if (!root) {
   throw new Error('Element #root not found.');
 }
 
-window.addEventListener('open-app', (e) => {
+window.addEventListener('open-window', (e) => {
   if (e instanceof CustomEvent) {
     const event = e as CustomEvent<ApplicationEventProps>;
     const application = getApplication(event.detail.name);
@@ -43,7 +43,22 @@ window.addEventListener('open-app', (e) => {
   }
 });
 
-window.addEventListener('close-app', (e) => {
+window.addEventListener('stash-window', (e: Event) => {
+  if (e instanceof CustomEvent) {
+    const event = e as CustomEvent<ApplicationEventProps>;
+    const application = getApplication(event.detail.name);
+    if (application) {
+      const appDom = document.querySelector(application.component);
+
+      if (appDom && 'windowDiv' in appDom) {
+        const windowDiv = appDom.windowDiv as HTMLElement;
+        windowDiv.classList.contains('stash') ? windowDiv.classList.remove('stash') : windowDiv.classList.add('stash');
+      }
+    }
+  }
+});
+
+window.addEventListener('close-window', (e) => {
   if (e instanceof CustomEvent) {
     const event = e as CustomEvent<ApplicationEventProps>;
     const application = getApplication(event.detail.name);

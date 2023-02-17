@@ -8,10 +8,18 @@
   margin: 0 auto;
   color: transparent;  
   text-shadow: 0 0 0 black;
+  margin: 2rem;
+
+  &-score {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   .row {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
 
     .cell {
       display: flex;

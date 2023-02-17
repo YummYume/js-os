@@ -41,18 +41,20 @@ class Application extends CustomElement implements ApplicationType {
     this.buttonStash = template.querySelector('[data-stash]');
 
     if (this.windowDiv && this.windowDiv instanceof HTMLDivElement) {
-      this.buttonClose?.addEventListener('click', this.close.bind(this));
-      this.buttonScreen?.addEventListener('click', this.screen.bind(this));
-      this.buttonStash?.addEventListener('click',  this.stash.bind(this));
+      this.buttonClose?.addEventListener('click', this.close.bind(this), false);
+      this.buttonScreen?.addEventListener('click', this.screen.bind(this), false);
+      this.buttonStash?.addEventListener('click',  this.stash.bind(this), false);
 
-      window.addEventListener('select-window', this.lastSelected.bind(this));
+      window.addEventListener('select-window', this.lastSelected.bind(this), false);
 
-      this.windowToolbar?.addEventListener('mousedown', this.handleMouseDown);
-      this.windowToolbar?.addEventListener('mousemove', this.handleMouseMove);
-      this.windowToolbar?.addEventListener('mouseup', this.handleMouseUp);
-      this.windowToolbar?.addEventListener('touchstart', this.handleMouseDown);
-      this.windowToolbar?.addEventListener('touchmove', this.handleMouseMove);
-      this.windowToolbar?.addEventListener('touchend', this.handleMouseUp);
+      this.windowDiv.addEventListener('mousedown', this.select.bind(this), false);
+
+      this.windowToolbar?.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
+      this.windowToolbar?.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
+      this.windowToolbar?.addEventListener('mouseup', this.handleMouseUp.bind(this), false);
+      this.windowToolbar?.addEventListener('touchstart', this.handleMouseDown.bind(this), false);
+      this.windowToolbar?.addEventListener('touchmove', this.handleMouseMove.bind(this), false);
+      this.windowToolbar?.addEventListener('touchend', this.handleMouseUp.bind(this), false);
     }
 
     this.runApp();
@@ -61,18 +63,20 @@ class Application extends CustomElement implements ApplicationType {
   disconnectedCallback() {
     if (!this.windowDiv) return;
 
-    this.buttonClose?.removeEventListener('click', this.close);
-    this.buttonScreen?.removeEventListener('click', this.screen);
-    this.buttonStash?.removeEventListener('click', this.stash);
+    this.buttonClose?.removeEventListener('click', this.close.bind(this), false);
+    this.buttonScreen?.removeEventListener('click', this.screen.bind(this), false);
+    this.buttonStash?.removeEventListener('click', this.stash.bind(this), false);
 
-    window.removeEventListener('select-window', this.lastSelected);
+    window.removeEventListener('select-window', this.lastSelected.bind(this), false);
 
-    this.windowToolbar?.removeEventListener('mousedown', this.handleMouseDown);
-    this.windowToolbar?.removeEventListener('mousemove', this.handleMouseMove);
-    this.windowToolbar?.removeEventListener('mouseup', this.handleMouseUp);
-    this.windowToolbar?.removeEventListener('touchstart', this.handleMouseDown);
-    this.windowToolbar?.removeEventListener('touchmove', this.handleMouseMove);
-    this.windowToolbar?.removeEventListener('touchend', this.handleMouseUp);
+    this.windowDiv.removeEventListener('mousedown', this.select.bind(this), false);
+
+    this.windowToolbar?.removeEventListener('mousedown', this.handleMouseDown.bind(this), false);
+    this.windowToolbar?.removeEventListener('mousemove', this.handleMouseMove.bind(this), false);
+    this.windowToolbar?.removeEventListener('mouseup', this.handleMouseUp.bind(this), false);
+    this.windowToolbar?.removeEventListener('touchstart', this.handleMouseDown.bind(this), false);
+    this.windowToolbar?.removeEventListener('touchmove', this.handleMouseMove.bind(this), false);
+    this.windowToolbar?.removeEventListener('touchend', this.handleMouseUp.bind(this), false);
 
     this.stopApp();
   }
@@ -115,8 +119,6 @@ class Application extends CustomElement implements ApplicationType {
     if (!this.windowDiv) return;
 
     if (this.buttonScreen) {
-      this.select();
-      
       if (this.windowDiv.classList.contains('fullscreen')) {
         this.windowDiv.classList.replace('fullscreen', 'windowed');
         this.buttonScreen.textContent = '◻';
@@ -145,8 +147,6 @@ class Application extends CustomElement implements ApplicationType {
     if (e.target !== e.currentTarget) return;
 
     if (this.windowDiv.classList.contains('fullscreen')) return;
-
-    this.select();
 
     if (e instanceof MouseEvent && e.button !== 0) return;
 

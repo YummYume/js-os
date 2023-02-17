@@ -54,9 +54,8 @@ class TaskBar extends CustomElement {
           navItem.ariaLabel = `open ${ application.name }`;
           navItem.addEventListener('click', () => {
             const app = document.querySelector(application.component);
-            window.dispatchEvent(new CustomEvent<ApplicationEventProps>( app ? 'stash-window' : 'open-window', { detail: {
-              name: application.name,
-            } }));
+            window.dispatchEvent(new CustomEvent<ApplicationEventProps>( app ? 'stash-window' : 'open-window', { detail: { name: application.name } }));
+            if (app) window.dispatchEvent(new CustomEvent<ApplicationEventProps>('select-window', { detail: { name: application.name } })); 
           });
           
           window.addEventListener('close-window', (e: Event) => {
@@ -67,6 +66,7 @@ class TaskBar extends CustomElement {
               }
             }
           });
+          
           window.addEventListener('open-window', (e: Event) => {
             if (e instanceof CustomEvent) {
               const event = e as CustomEvent<ApplicationEventProps>;

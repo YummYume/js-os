@@ -36,6 +36,7 @@
         border-radius: 0.2rem;
         stroke: #fff;
         transition: border 0.1s ease-in-out;
+        box-shadow: 0 1px 3px rgba(0,0,0), 0 1px 2px rgba(0,0,0);
         cursor: pointer;
 
         &-blue {
@@ -44,9 +45,30 @@
         &-purple {
             background-color: rgb(213, 130, 241);
         }
-        &-active {
-            border: thick double rgb(63, 65, 210);
+        &:hover{
+            animation: on-task alternate 0.5s ease-in-out infinite;
         }
+        &-active {
+            animation: actif-window alternate 0.5s ease-in-out infinite;
+        }
+    }
+}
+
+@keyframes actif-window {
+    from {
+        opacity: 100%;
+    }
+    to {
+        opacity: 40%;
+    }
+}
+
+@keyframes on-task {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
     }
 }
 

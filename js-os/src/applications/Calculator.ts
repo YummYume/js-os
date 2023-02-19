@@ -1,5 +1,5 @@
-import styles from '@styles/components/Calculator.scss';
-import htmlTemplate from '@templates/components/Calculator.html?raw';
+import styles from '@styles/applications/Calculator.scss';
+import htmlTemplate from '@templates/applications/Calculator.html?raw';
 
 import Application from '@/Application';
 import APPLICATION from '@constants/application';
@@ -12,11 +12,15 @@ class Calculator extends Application implements ApplicationType {
   name = APPLICATION.CALCULATOR.name;
 
   #numbers: NodeListOf<Element> | [] = [];
+
   #operators: NodeListOf<Element> | [] = [];
 
   #pivotNumber = 0;
-  #isActiveOperator = false; 
+
+  #isActiveOperator = false;
+
   #previousResult: HTMLElement | null = null;
+
   #result: HTMLElement | null = null;
 
   constructor() {
@@ -45,7 +49,7 @@ class Calculator extends Application implements ApplicationType {
       }
     }
   }
-  
+
   // Didmount: remove all event listener
   stop() {
     this.#numbers.forEach((number) => {
@@ -55,7 +59,7 @@ class Calculator extends Application implements ApplicationType {
       number.addEventListener('click', this.callOperator);
     });
   }
-  
+
   calculate(template: Element) {
     this.#previousResult = template.querySelector('.previous-input');
     this.#result = template.querySelector('.current-input');
@@ -118,7 +122,7 @@ class Calculator extends Application implements ApplicationType {
         case 'dot':
           if (!this.#result.textContent.includes('.')) {
             this.#result.textContent = `${this.#result.textContent}.`;
-          } 
+          }
           break;
         case 'percent':
           if (!isNaN(result)) this.#result.textContent = `${this.mumberInPow(result / 100)}`;
@@ -129,7 +133,7 @@ class Calculator extends Application implements ApplicationType {
               if (!isNaN(result)) {
                 const value = this.getOperation(this.#pivotNumber, result, currentSelect.dataset.calcOperator as Operator);
                 this.#previousResult.textContent = `${ typeof value === 'string' ? value : this.mumberInPow(value)}`;
-              } 
+              }
               this.#result.textContent = '0';
             }
             currentSelect.removeAttribute('data-calc-select');

@@ -3,12 +3,11 @@
 .board {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  height: 300px;
-  margin: 0 auto;
-  color: transparent;  
+  flex-grow: 1;
+  height: 100%;
+  color: transparent;
   text-shadow: 0 0 0 black;
-  margin: 2rem;
+  gap: 0.6rem;
 
   &-score {
     display: flex;
@@ -20,6 +19,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    height: 100%;
 
     .cell {
       display: flex;
@@ -28,8 +28,7 @@
       background-color: $window-bg-blur;
       box-shadow: 0 4px 30px $window-shadow-blur;
       backdrop-filter: blur(5px);
-      width: 100px;
-      height: 100px;
+      height: auto;
       font-size: 3em;
       transition: background-color 0.3s ease;
       cursor: pointer;
@@ -58,5 +57,53 @@
       border-radius: 0 0 15% 0;
     }
   }
+
+  .btn {
+    padding: 0.5rem 0;
+  }
 }
-  
+
+.match-result {
+  display: none;
+  flex-direction: column;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #a18f8fa1;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.6rem;
+  user-select: none;
+  cursor: pointer;
+
+  .match-winner {
+    text-transform: capitalize;
+    font-size: 2.5rem;
+    animation: grow-shrink 1s ease-in-out infinite;
+    height: 3rem;
+  }
+
+  small {
+    font-size: 1rem;
+    color: #fff;
+  }
+}
+
+@keyframes grow-shrink {
+  0% {
+    font-size: 30px;
+  }
+
+  50% {
+    font-size: 40px;
+  }
+
+  100% {
+    font-size: 30px;
+  }
+}

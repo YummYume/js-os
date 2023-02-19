@@ -8,17 +8,21 @@ import type { ApplicationEventProps } from '@defs/application';
 
 class TaskBar extends CustomElement {
   #currentTime = new Date();
+
   #currentTimeCallback: number | undefined;
+
   #intlTimeFormat = new Intl.DateTimeFormat(
     'en',
     { hour: 'numeric', minute: 'numeric', hour12: false },
   );
+
   #intlDateFormat = new Intl.DateTimeFormat(
     'en',
     { day: '2-digit', month: 'long', year: 'numeric' },
   );
 
   items: string[] = [];
+
   regex = /(?<=\()[^)]*(?=\))/;
 
   constructor() {
@@ -39,7 +43,7 @@ class TaskBar extends CustomElement {
 
     if (tasksContainer) {
       this.items.forEach((item) => {
-      
+
         // System for class item
         const match = this.regex.exec(item);
         const classItem = match ? match[0].split(';') : [];
@@ -55,9 +59,9 @@ class TaskBar extends CustomElement {
           navItem.addEventListener('click', () => {
             const app = document.querySelector(application.component);
             window.dispatchEvent(new CustomEvent<ApplicationEventProps>( app ? 'stash-window' : 'open-window', { detail: { name: application.name } }));
-            if (app) window.dispatchEvent(new CustomEvent<ApplicationEventProps>('select-window', { detail: { name: application.name } })); 
+            if (app) window.dispatchEvent(new CustomEvent<ApplicationEventProps>('select-window', { detail: { name: application.name } }));
           });
-          
+
           window.addEventListener('close-window', (e: Event) => {
             if (e instanceof CustomEvent) {
               const event = e as CustomEvent<ApplicationEventProps>;
@@ -66,7 +70,7 @@ class TaskBar extends CustomElement {
               }
             }
           });
-          
+
           window.addEventListener('open-window', (e: Event) => {
             if (e instanceof CustomEvent) {
               const event = e as CustomEvent<ApplicationEventProps>;
@@ -86,7 +90,7 @@ class TaskBar extends CustomElement {
       });
 
     }
-    
+
     const currentTimeSpan = infoContainer?.querySelector('#current-time');
     const currentDateSpan = infoContainer?.querySelector('#current-date');
 

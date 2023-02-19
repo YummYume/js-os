@@ -3,6 +3,7 @@ import htmlTemplate from '@templates/Window.html?raw';
 
 import CustomElement from '@/CustomElement';
 import APPLICATION from '@constants/application';
+import BREAKPOINTS from '@constants/breakpoints';
 
 import type { ApplicationEventProps, Application as ApplicationType } from 'types/application';
 
@@ -14,15 +15,24 @@ class Application extends CustomElement implements ApplicationType {
   y = 0;
 
   moving = false;
+
   lastPosition: { x: string, y: string } = { x: '0%', y: '0%' };
+
+  lastSize: { width: string, height: string } = { width: '25rem', height: '25rem' };
 
   // window
   windowDiv: HTMLElement | null = null;
 
   // toolbar window
   windowToolbar: HTMLElement | null = null;
+
+  // window content
+  windowContent: HTMLElement | null = null;
+
   buttonClose: HTMLButtonElement | null = null;
+
   buttonScreen: HTMLButtonElement | null = null;
+
   buttonStash: HTMLButtonElement | null = null;
 
   constructor() {
@@ -36,6 +46,7 @@ class Application extends CustomElement implements ApplicationType {
 
     this.windowDiv = template.querySelector('.window');
     this.windowToolbar = template.querySelector('.window-toolbar');
+    this.windowContent = template.querySelector('.window-content');
     this.buttonClose = template.querySelector('[data-close]');
     this.buttonScreen = template.querySelector('[data-screen]');
     this.buttonStash = template.querySelector('[data-stash]');
@@ -55,6 +66,12 @@ class Application extends CustomElement implements ApplicationType {
       this.windowToolbar?.addEventListener('touchstart', this.handleMouseDown.bind(this), false);
       this.windowToolbar?.addEventListener('touchmove', this.handleMouseMove.bind(this), false);
       this.windowToolbar?.addEventListener('touchend', this.handleMouseUp.bind(this), false);
+    }
+
+    const appNameHolder = this.windowToolbar?.querySelector('span.window-toolbar_appname');
+
+    if (appNameHolder) {
+      appNameHolder.textContent = this.name;
     }
 
     this.runApp();
@@ -97,7 +114,7 @@ class Application extends CustomElement implements ApplicationType {
   }
 
   eventDispatcher(event: string) {
-    window.dispatchEvent(new CustomEvent<ApplicationEventProps>(event, { detail: { name: this.name } })); 
+    window.dispatchEvent(new CustomEvent<ApplicationEventProps>(event, { detail: { name: this.name } }));
   }
 
   // Place in first plan the last selected window
@@ -119,30 +136,57 @@ class Application extends CustomElement implements ApplicationType {
     if (!this.windowDiv) return;
 
     if (this.buttonScreen) {
+      const maximizeIcon = this.buttonScreen.querySelector('svg#screen-maximize-icon');
+      const minimizeIcon = this.buttonScreen.querySelector('svg#screen-minimize-icon');
+
       if (this.windowDiv.classList.contains('fullscreen')) {
         this.windowDiv.classList.replace('fullscreen', 'windowed');
-        this.buttonScreen.textContent = '◻';
-        this.resetPosition(this.lastPosition.x, this.lastPosition.y);
+        this.buttonScreen.ariaLabel = 'Enter fullscreen';
+
+        if (minimizeIcon && minimizeIcon instanceof SVGElement) {
+          minimizeIcon.style.display = 'none';
+          minimizeIcon.style.visibility = 'hidden';
+        }
+
+        if (maximizeIcon && maximizeIcon instanceof SVGElement) {
+          maximizeIcon.style.display = 'initial';
+          maximizeIcon.style.visibility = 'visible';
+        }
+
+        this.resetPosition(this.lastPosition.x, this.lastPosition.y, this.lastSize.width, this.lastSize.height);
       } else {
         if (this.windowDiv.classList.contains('windowed')) {
           this.windowDiv.classList.replace('windowed', 'fullscreen');
-          this.buttonScreen.textContent = '⧉';
+          this.buttonScreen.ariaLabel = 'Exit fullscreen';
+
+          if (maximizeIcon && maximizeIcon instanceof SVGElement) {
+            maximizeIcon.style.display = 'none';
+            maximizeIcon.style.visibility = 'hidden';
+          }
+
+          if (minimizeIcon && minimizeIcon instanceof SVGElement) {
+            minimizeIcon.style.display = 'initial';
+            minimizeIcon.style.visibility = 'visible';
+          }
+
           this.lastPosition = { x: this.windowDiv.style.left, y: this.windowDiv.style.top };
-          this.resetPosition();
+          this.lastSize = { width: this.windowDiv.style.width, height: this.windowDiv.style.height };
         }
       }
     }
   }
 
-  private resetPosition (x = '0%', y = '0%') {
+  private resetPosition (x = '0%', y = '0%', width = '100vw', height = '94vh') {
     if (!this.windowDiv) return;
 
     this.windowDiv.style.left = x;
     this.windowDiv.style.top = y;
+    this.windowDiv.style.width = width;
+    this.windowDiv.style.height = height;
   }
 
   private handleMouseDown = (e: MouseEvent | TouchEvent) => {
-    if (!this.windowDiv) return;
+    if (!this.windowDiv || window.screen.width < BREAKPOINTS.MOBILE) return;
 
     if (e.target !== e.currentTarget) return;
 
@@ -155,6 +199,7 @@ class Application extends CustomElement implements ApplicationType {
     this.x = event.clientX - this.windowDiv.getBoundingClientRect().left;
     this.y = event.clientY - this.windowDiv.getBoundingClientRect().top;
     this.moving = true;
+    document.body.style.userSelect = 'none';
   };
 
   private handleMouseMove = (e: MouseEvent | TouchEvent) => {
@@ -170,6 +215,7 @@ class Application extends CustomElement implements ApplicationType {
 
   private handleMouseUp = () => {
     this.moving = false;
+    document.body.style.userSelect = 'initial';
   };
 }
 

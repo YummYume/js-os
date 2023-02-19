@@ -22,11 +22,7 @@
     justify-content: flex-start;
     flex-grow: 1;
     align-items: center;
-    gap: 5px;
-
-    // @media screen and (max-width: $mobile-breakpoint) {
-    //     display: none;
-    // }
+    gap: 0.625rem;
 
     .icon {
         display: flex;

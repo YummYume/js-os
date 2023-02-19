@@ -1,3 +1,5 @@
+@import "@styles/variables.scss";
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -17,9 +19,11 @@
         margin-left: -60px;
         opacity: 0;
         transition: opacity 1s;
+        text-transform: capitalize;
 
-        &::first-letter {
-            text-transform: uppercase;
+        @media screen and (max-width: $mobile-breakpoint) {
+            display: none;
+            visibility: none;
         }
 
         &::after {
@@ -40,4 +44,4 @@
             opacity: 1;
         }
     }
-} 
+}

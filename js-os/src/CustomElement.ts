@@ -1,12 +1,17 @@
 import { removeChildNodes } from '@utils/removeChildNodes';
+import Singleton from '@utils/singleton';
 
 type callback = () => void;
 
 class CustomElement extends HTMLElement {
   #shadow = this.attachShadow({ mode : 'closed' });
+
   #styles = document.createElement('style');
+
   #arrayValues: string[] = [];
+
   #run: callback[] = [];
+
   #stop: callback[] = [];
 
   constructor() {
@@ -20,7 +25,7 @@ class CustomElement extends HTMLElement {
     if (templateStringOrNode instanceof Node) {
       template.appendChild(templateStringOrNode);
     } else {
-      const parser = new DOMParser();
+      const parser = Singleton.getInstance<DOMParser>(DOMParser);
       const parsedTemplate = parser.parseFromString(templateStringOrNode, 'text/html');
 
       parsedTemplate.body.childNodes.forEach((child) => {
@@ -34,8 +39,8 @@ class CustomElement extends HTMLElement {
   convertStringToNode(templateString: string): ChildNode | null {
     let template: ChildNode | null = null;
 
-    const parser = new DOMParser();
-    const { body: { childNodes } } = parser.parseFromString(templateString, 'text/html');
+    const parser = Singleton.getInstance<DOMParser>(DOMParser);
+    const { body: { childNodes } } = parser.parseFromString(templateString.trim(), 'text/html');
     childNodes.forEach((child) => {
       template = child;
     });

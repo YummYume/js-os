@@ -1,5 +1,5 @@
-import styles from '@styles/components/Tictactoe.scss';
-import htmlTemplate from '@templates/components/Tictactoe.html?raw';
+import styles from '@styles/applications/Tictactoe.scss';
+import htmlTemplate from '@templates/applications/Tictactoe.html?raw';
 
 import Application from '@/Application';
 import APPLICATION from '@constants/application';
@@ -11,8 +11,11 @@ type Position = { x: number, y: number };
 
 class Tictactoe extends Application implements ApplicationType {
   name = APPLICATION.TICTACTOE.name;
+
   cross = '\u274C';
+
   circle = '\u2B55';
+
   board = [
     [0, 1, 2],
     [3, 4, 5],
@@ -22,8 +25,11 @@ class Tictactoe extends Application implements ApplicationType {
   template = this.getShadow();
 
   #alternateChoice = false;
+
   #cells: NodeListOf<HTMLDivElement> | [] = [];
+
   #buttonReset: HTMLButtonElement | null = null;
+
   #winner: 'cross' | 'circle' | null = null;
 
   constructor() {
@@ -74,8 +80,30 @@ class Tictactoe extends Application implements ApplicationType {
       this.#alternateChoice = !this.#alternateChoice;
 
       const gameStatus = this.isDone();
+
       if (gameStatus !== 'in progress') {
-        alert(gameStatus === 'win' ? this.#winner : 'Draw game');
+        const winner = this.windowContent?.querySelector('.match-result') as HTMLElement | null;
+
+        if (winner) {
+          const onWinnerClick = () => {
+            winner.removeEventListener('click', onWinnerClick);
+            winner.style.display = 'none';
+            winner.style.visibility = 'hidden';
+            this.reset();
+          };
+          const winnerText = winner.querySelector('.match-winner');
+
+          if (winnerText) {
+            winnerText.textContent = gameStatus === 'win' ? `${this.#winner} wins` : 'Draw';
+          }
+
+          winner.style.display = 'flex';
+          winner.style.visibility = 'visible';
+          winner.addEventListener('click', onWinnerClick);
+
+          return;
+        }
+
         this.reset();
       }
     }
@@ -85,26 +113,26 @@ class Tictactoe extends Application implements ApplicationType {
     for (let i = 0; i < 3; i++) {
       // Horizontal
       if (this.checkTheePosition({ x: i, y: 0 }, { x: i, y: 1 }, { x: i, y: 2 })) {
-        this.#winner = this.getCellType(i, 0); 
+        this.#winner = this.getCellType(i, 0);
         return 'win';
       }
-      
+
       // Vertical
       if (this.checkTheePosition({ x: 0, y: i }, { x: 1, y: i }, { x: 2, y: i })) {
-        this.#winner = this.getCellType(0, i); 
+        this.#winner = this.getCellType(0, i);
         return 'win';
       }
     }
 
     // Diagonal top to bottom
     if (this.checkTheePosition({ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 })) {
-      this.#winner = this.getCellType(0, 0); 
+      this.#winner = this.getCellType(0, 0);
       return 'win';
     }
 
     // Diagonal bottom to top
     if (this.checkTheePosition({ x: 2, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 2 })) {
-      this.#winner = this.getCellType(2, 0); 
+      this.#winner = this.getCellType(2, 0);
       return 'win';
     }
 

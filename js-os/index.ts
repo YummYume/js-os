@@ -5,20 +5,28 @@ import Tictactoe from '@/applications/Tictactoe';
 import Battery from '@/components/Battery';
 import Network from '@/components/Network';
 import TaskBar from '@/components/TaskBar';
+import Settings from '@/applications/Settings';
 import { getApplication } from '@constants/application';
 
 import type { ApplicationComponent, ApplicationEventProps } from '@defs/application';
+import { isNull } from '@utils/tools';
 
 customElements.define('task-bar', TaskBar);
 customElements.define('battery-icon', Battery);
 customElements.define('network-icon', Network);
 customElements.define('calculator-app', Calculator);
 customElements.define('tictactoe-app', Tictactoe);
+customElements.define('settings-app', Settings);
 
 const node = document.createElement('div');
 const applications: ApplicationComponent[] = [];
 
 document.body.appendChild(node);
+
+Settings.OPTIONS_AVAILABLE.forEach((option) => {
+  const optionSet = localStorage.getItem(option);
+  if (isNull(optionSet)) localStorage.setItem(option, `${true}`);
+});
 
 node.insertAdjacentHTML('beforebegin', App);
 node.remove();

@@ -7,19 +7,16 @@ import { getApplication } from '@constants/application';
 import type { ApplicationEventProps } from '@defs/application';
 
 class TaskBar extends CustomElement {
+  template = this.getShadow();
+
   #currentTime = new Date();
 
   #currentTimeCallback: number | undefined;
+  #currentDateCallback: number | undefined;
 
-  #intlTimeFormat = new Intl.DateTimeFormat(
-    'en',
-    { hour: 'numeric', minute: 'numeric', hour12: false },
-  );
+  #intlTimeFormat = this.formatDateTime();
 
-  #intlDateFormat = new Intl.DateTimeFormat(
-    'en',
-    { day: '2-digit', month: 'long', year: 'numeric' },
-  );
+  #intlDateFormat = this.formatDateTime(false);
 
   items: string[] = [];
 
@@ -37,9 +34,7 @@ class TaskBar extends CustomElement {
       throw new Error(`Expected an array for attribute 'items' but received ${typeof this.items}.`);
     }
 
-    const template = this.getShadow();
-    const tasksContainer = template.querySelector('#tasks');
-    const infoContainer = template.querySelector('#info');
+    const tasksContainer = this.template.querySelector('#tasks');
 
     if (tasksContainer) {
       this.items.forEach((item) => {
@@ -88,36 +83,79 @@ class TaskBar extends CustomElement {
           tasksContainer.appendChild(navItem);
         }
       });
-
     }
+
+    this.timeTask();
+
+    window.addEventListener('storage', this.timeTask.bind(this));
+  }
+
+
+  timeTask() {
+    const infoContainer = this.template.querySelector('#info');
 
     const currentTimeSpan = infoContainer?.querySelector('#current-time');
     const currentDateSpan = infoContainer?.querySelector('#current-date');
 
+    clearInterval(this.#currentTimeCallback);
+    clearInterval(this.#currentDateCallback);
+
     if (currentTimeSpan) {
-      currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
+      if (localStorage.getItem('time') === "true") {
+        this.#intlTimeFormat = this.formatDateTime();
+        currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
+  
+        this.#currentTimeCallback = setInterval(() => {
+          this.#currentTime = new Date();
+  
+          currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
+        }, 1000);
+      } else {
+        currentTimeSpan.textContent = "";
+      }
     }
 
     if (currentDateSpan) {
-      currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
+      if (localStorage.getItem('date') === "true") {
+        this.#intlDateFormat = this.formatDateTime(false);
+        currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
+  
+        this.#currentDateCallback = setInterval(() => {
+          this.#currentTime = new Date();
+  
+          // Check for new day
+          if (this.#currentTime.getSeconds() === 0) {
+            currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
+          }
+        }, 1000);
+      } else {
+        currentDateSpan.textContent = "";
+      }
     }
+  }
 
-    if (currentTimeSpan) {
-      this.#currentTimeCallback = setInterval(() => {
-        this.#currentTime = new Date();
-
-        currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
-
-        // Check for new day
-        if (currentDateSpan && this.#currentTime.getSeconds() === 0) {
-          currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
-        }
-      }, 1000);
-    }
+  formatDateTime (isTime: boolean = true): Intl.DateTimeFormat {
+    return isTime ? new Intl.DateTimeFormat(
+      'en',
+      {
+        hour: "numeric",
+        minute: localStorage.getItem('minute') === "true" ? "numeric" : undefined,
+        second: localStorage.getItem('second') === "true" ? "numeric" : undefined,
+        hour12: true 
+      },
+    ) : new Intl.DateTimeFormat(
+      'en',
+      {
+        year: localStorage.getItem('year') === "true" ? "numeric" : undefined,
+        month: localStorage.getItem('month') === "true" ? "numeric" : undefined,
+        day: localStorage.getItem('day') === "true" ? "2-digit" : undefined,
+      }
+    );
   }
 
   disconnectedCallback() {
     clearInterval(this.#currentTimeCallback);
+    clearInterval(this.#currentDateCallback);
   }
 
   static get observedAttributes() {

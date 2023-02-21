@@ -117,3 +117,26 @@ noscript {
     text-align: center;
     color: rgb(206, 76, 76);
 }
+
+.toast {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    background-color: #e0ed57;
+    color: #000;
+    border-radius: 0.5em;
+    padding: 1em;
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  
+    &.show {
+      opacity: 1;
+    }
+  
+    .toast-message {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  }
+  

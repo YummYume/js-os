@@ -1,6 +1,6 @@
-export type ApplicationName = 'application' | 'calculator' | 'tictactoe' | 'settings';
+export type ApplicationName = 'application' | 'calculator' | 'tictactoe' | 'settings' | 'clock';
 
-export type ApplicationComponent = 'application-app' | 'calculator-app' | 'tictactoe-app' | 'settings-app';
+export type ApplicationComponent = 'application-app' | 'calculator-app' | 'tictactoe-app' | 'settings-app' | 'clock-app';
 
 export interface Application {
   name: ApplicationName;

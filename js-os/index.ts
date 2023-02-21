@@ -6,6 +6,7 @@ import Battery from '@/components/Battery';
 import Network from '@/components/Network';
 import TaskBar from '@/components/TaskBar';
 import Settings from '@/applications/Settings';
+import Clock from '@/applications/Clock';
 import { getApplication } from '@constants/application';
 
 import type { ApplicationComponent, ApplicationEventProps } from '@defs/application';
@@ -17,6 +18,7 @@ customElements.define('network-icon', Network);
 customElements.define('calculator-app', Calculator);
 customElements.define('tictactoe-app', Tictactoe);
 customElements.define('settings-app', Settings);
+customElements.define('clock-app', Clock);
 
 const node = document.createElement('div');
 const applications: ApplicationComponent[] = [];
@@ -82,6 +84,23 @@ window.addEventListener('close-window', (e) => {
         }
       });
     }
+  }
+});
+
+window.addEventListener('toast', (e) => {
+  const toast = document.querySelector('.toast');
+  if (!toast) return;
+
+  const toastMessage = toast.querySelector('.toast-message');
+  if (!toastMessage) return;
+
+  if (e instanceof CustomEvent) {
+    const event = e as CustomEvent<{ message: string }>;
+    toastMessage.textContent = event.detail.message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
   }
 });
 

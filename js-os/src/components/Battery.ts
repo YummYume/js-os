@@ -2,8 +2,11 @@ import htmlTemplate from '@templates/components/Battery.html?raw';
 
 import CustomElement from '@/CustomElement';
 import { removeChildNodes } from '@utils/removeChildNodes';
+import { isNull } from '@utils/tools';
 
 class Battery extends CustomElement {
+  template = this.getShadow();
+
   #batteryManager: BatteryManager | null = null;
 
   constructor() {
@@ -17,13 +20,39 @@ class Battery extends CustomElement {
       this.onBatteryChange();
     }
 
+    window.addEventListener('storage', this.batterySetting.bind(this));
+    this.addEvent();
+  }
+
+  batterySetting() {
+    const batteryStatus = this.template.querySelector('#current-battery-status');
+    const batterySet = localStorage.getItem('battery');
+
+    if (isNull(batterySet) || !batteryStatus) return;
+
+    this.removeEvent();
+  
+    if(batterySet !== 'true') {
+      batteryStatus.textContent = "";
+    } else {
+      this.onBatteryChange();
+      this.addEvent();
+    }
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('storage', this.batterySetting.bind(this));
+    this.removeEvent();
+  }
+
+  addEvent() {
     if (this.#batteryManager) {
       this.#batteryManager.addEventListener('chargingchange', this.onBatteryChange.bind(this), false);
       this.#batteryManager.addEventListener('levelchange', this.onBatteryChange.bind(this), false);
     }
   }
 
-  disconnectedCallback() {
+  removeEvent() {
     if (this.#batteryManager) {
       this.#batteryManager.removeEventListener('chargingchange', this.onBatteryChange.bind(this), false);
       this.#batteryManager.removeEventListener('levelchange', this.onBatteryChange.bind(this), false);
@@ -31,9 +60,8 @@ class Battery extends CustomElement {
   }
 
   onBatteryChange() {
-    const template = this.getShadow();
-    const batteryIcons = template.querySelector('#battery-icons');
-    const batteryStatus = template.querySelector('#current-battery-status');
+    const batteryIcons = this.template.querySelector('#battery-icons');
+    const batteryStatus = this.template.querySelector('#current-battery-status');
 
     if (batteryIcons && batteryIcons instanceof HTMLTemplateElement && batteryStatus) {
       const batteryEmptyIcon = batteryIcons.content.querySelector('#battery-empty');

@@ -44,6 +44,9 @@
         &-grey {
             background-color: rgb(161, 153, 163);
         }
+        &-white {
+            background-color: #fff;
+        }
         &:hover{
             animation: on-task alternate 0.5s ease-in-out infinite;
         }

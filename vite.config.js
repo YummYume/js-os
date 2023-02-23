@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 import path, { resolve } from 'path';
 
 export default defineConfig({
-  base: '/<REPO>/',
+  base: '/js-os/',
   root: resolve('js-os'),
   resolve: {
     alias: {

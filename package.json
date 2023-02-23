@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "start": "vite",
+    "build": "vite build",
     "lint": "eslint ./js-os vite.config.js",
     "prepare": "husky install"
   },

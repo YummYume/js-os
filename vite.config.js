@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import path, { resolve } from 'path';
 
 export default defineConfig({
+  base: '/<REPO>/',
   root: resolve('js-os'),
   resolve: {
     alias: {
@@ -12,7 +13,7 @@ export default defineConfig({
       '@constants' : path.resolve(__dirname, '/constants'),
       '@styles' : path.resolve(__dirname, '/styles'),
       '@templates' : path.resolve(__dirname, '/templates'),
-      '@types' : path.resolve(__dirname, '/types'),
+      '@defs' : path.resolve(__dirname, '/types'),
       '@utils' : path.resolve(__dirname, '/utils')
     }
   },

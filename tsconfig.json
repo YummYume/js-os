@@ -42,7 +42,7 @@
       "@templates/*": [
         "templates/*.html"
       ],
-      "@types/*": [
+      "@defs/*": [
         "types/*"
       ],
       "@utils/*": [

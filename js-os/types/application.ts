@@ -1,19 +1,25 @@
-import APPLICATION from 'constants/application';
+export type ApplicationName = 'application' | 'calculator' | 'tictactoe' | 'settings' | 'clock';
 
-export type ApplicationName = typeof APPLICATION[keyof typeof APPLICATION]['name'];
+export type ApplicationComponent = 'application-app' | 'calculator-app' | 'tictactoe-app' | 'settings-app' | 'clock-app';
 
 export interface Application {
   name: ApplicationName;
-
-  width: number;
-
-  height: number;
 
   x: number;
 
   y: number;
 
+  moving: boolean;
+
   close: () => void;
+}
+
+export interface ApplicationList {
+  [key: string]: {
+    name: ApplicationName,
+    component: ApplicationComponent,
+    icon: string
+  }
 }
 
 export interface ApplicationEventProps {

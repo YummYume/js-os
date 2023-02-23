@@ -150,6 +150,9 @@
             "error",
             "unix"
         ],
+        "lines-between-class-members": [
+            "error"
+        ],
         "max-len": [
             "warn",
             {

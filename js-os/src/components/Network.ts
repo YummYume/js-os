@@ -2,8 +2,11 @@ import htmlTemplate from '@templates/components/Network.html?raw';
 
 import CustomElement from '@/CustomElement';
 import { removeChildNodes } from '@utils/removeChildNodes';
+import { isNull } from '@utils/tools';
 
 class Network extends CustomElement {
+  template = this.getShadow();
+
   #networkInformation: NetworkInformation | null = null;
 
   constructor() {
@@ -13,23 +16,47 @@ class Network extends CustomElement {
 
   async connectedCallback() {
     this.#networkInformation = navigator.connection;
+    this.onNetworkChange();
 
-    if (this.#networkInformation) {
-      this.#networkInformation.addEventListener('change', this.onNetworkChange.bind(this), false);
+    window.addEventListener('storage', this.networkSetting.bind(this));
+    this.addEvent();
+  }
+
+  networkSetting() {
+    const networkStatus = this.template.querySelector('#current-network-status');
+    const networkSet = localStorage.getItem('network');
+
+    if (isNull(networkSet) || !networkStatus) return;
+
+    this.removeEvent();
+
+    if (networkSet !== 'true') {
+      networkStatus.textContent = '';
+    } else {
       this.onNetworkChange();
+      this.addEvent();
     }
   }
 
   disconnectedCallback() {
+    this.removeEvent();
+  }
+
+  addEvent() {
+    if (this.#networkInformation) {
+      this.#networkInformation.addEventListener('change', this.onNetworkChange.bind(this), false);
+    }
+  }
+
+  removeEvent() {
     if (this.#networkInformation) {
       this.#networkInformation.removeEventListener('change', this.onNetworkChange.bind(this), false);
     }
   }
 
   onNetworkChange() {
-    const template = this.getShadow();
-    const networkIcons = template.querySelector('#network-icons');
-    const networkStatus = template.querySelector('#current-network-status');
+    const networkIcons = this.template.querySelector('#network-icons');
+    const networkStatus = this.template.querySelector('#current-network-status');
 
     if (this.#networkInformation && networkIcons && networkIcons instanceof HTMLTemplateElement && networkStatus) {
       removeChildNodes(networkStatus);

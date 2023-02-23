@@ -1,3 +1,22 @@
-<div class="window" draggable="true">
-    <div data-content></div>
+<div class="window windowed">
+    <div class="window-toolbar">
+        <span class="window-toolbar_appname"></span>
+        <button aria-label="Minimize the application" type="button" class="btn btn-yellow" data-stash>
+            <svg width="15" height="15" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 8a1 1 0 011-1h10a1 1 0 110 2H3a1 1 0 01-1-1z" fill="#000000"/>
+            </svg>
+        </button>
+        <button aria-label="Enter fullscreen" type="button" class="btn btn-blue" data-screen>
+            <svg id="screen-maximize-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.99999 20.9585C6.88841 20.8286 4.41431 20.4143 4.00001 20C3.5857 19.5857 3.17139 17.1116 3.04155 14M20.9585 14C20.8286 17.1116 20.4143 19.5857 20 20C19.5857 20.4143 17.1116 20.8286 14 20.9585M14 3.04155C17.1116 3.17139 19.5857 3.5857 20 4.00001C20.4143 4.41431 20.8286 6.88842 20.9585 10M10 3.04155C6.88842 3.17139 4.41431 3.5857 4.00001 4.00001C3.5857 4.41431 3.17139 6.88842 3.04155 10" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg id="screen-minimize-icon" style="display: none; visibility: hidden;" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.99976 8H3.19976C4.87991 8 5.71999 8 6.36173 7.67302C6.92621 7.3854 7.38516 6.92646 7.67278 6.36197C7.99976 5.72024 7.99976 4.88016 7.99976 3.2V3M2.99976 16H3.19976C4.87991 16 5.71999 16 6.36173 16.327C6.92621 16.6146 7.38516 17.0735 7.67278 17.638C7.99976 18.2798 7.99976 19.1198 7.99976 20.8V21M15.9998 3V3.2C15.9998 4.88016 15.9998 5.72024 16.3267 6.36197C16.6144 6.92646 17.0733 7.3854 17.6378 7.67302C18.2795 8 19.1196 8 20.7998 8H20.9998M15.9998 21V20.8C15.9998 19.1198 15.9998 18.2798 16.3267 17.638C16.6144 17.0735 17.0733 16.6146 17.6378 16.327C18.2795 16 19.1196 16 20.7998 16H20.9998" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <button aria-label="Close the application" type="button" class="btn btn-red" data-close>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#000000"/></svg>
+        </button>
+    </div>
+    <div class="window-content"></div>
 </div>

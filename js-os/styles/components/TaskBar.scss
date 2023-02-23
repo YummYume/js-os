@@ -22,14 +22,55 @@
     justify-content: flex-start;
     flex-grow: 1;
     align-items: center;
-    gap: 5px;
-
-    @media screen and (max-width: $mobile-breakpoint) {
-        display: none;
-    }
+    gap: 0.625rem;
 
     .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.2rem;
+        border-radius: 0.2rem;
         stroke: #fff;
+        transition: border 0.1s ease-in-out;
+        box-shadow: 0 1px 3px rgba(0,0,0), 0 1px 2px rgba(0,0,0);
+        cursor: pointer;
+
+        &-blue {
+            background-color: rgb(91, 183, 241);
+        }
+        &-purple {
+            background-color: rgb(213, 130, 241);
+        }
+        &-grey {
+            background-color: rgb(161, 153, 163);
+        }
+        &-white {
+            background-color: #fff;
+        }
+        &:hover{
+            animation: on-task alternate 0.5s ease-in-out infinite;
+        }
+        &-active {
+            animation: actif-window alternate 0.5s ease-in-out infinite;
+        }
+    }
+}
+
+@keyframes actif-window {
+    from {
+        opacity: 100%;
+    }
+    to {
+        opacity: 40%;
+    }
+}
+
+@keyframes on-task {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
     }
 }
 

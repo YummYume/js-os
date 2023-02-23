@@ -29,9 +29,9 @@ class Network extends CustomElement {
     if (isNull(networkSet) || !networkStatus) return;
 
     this.removeEvent();
-  
-    if(networkSet !== 'true') {
-      networkStatus.textContent = "";
+
+    if (networkSet !== 'true') {
+      networkStatus.textContent = '';
     } else {
       this.onNetworkChange();
       this.addEvent();
@@ -39,7 +39,7 @@ class Network extends CustomElement {
   }
 
   disconnectedCallback() {
-    this.removeEvent()
+    this.removeEvent();
   }
 
   addEvent() {

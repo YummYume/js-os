@@ -31,9 +31,9 @@ class Battery extends CustomElement {
     if (isNull(batterySet) || !batteryStatus) return;
 
     this.removeEvent();
-  
-    if(batterySet !== 'true') {
-      batteryStatus.textContent = "";
+
+    if (batterySet !== 'true') {
+      batteryStatus.textContent = '';
     } else {
       this.onBatteryChange();
       this.addEvent();

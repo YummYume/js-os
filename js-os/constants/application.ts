@@ -25,7 +25,7 @@ const APPLICATION: ApplicationList = {
     name: 'clock',
     component: 'clock-app',
     icon: '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 51.8C143.4 51.8 51.8 143.4 51.8 256S143.4 460.2 256 460.2 460.2 368.6 460.2 256 368.6 51.8 256 51.8zm0 449.2C120.9 501 11 391.1 11 256S120.9 11 256 11s245 109.9 245 245-109.9 245-245 245z"/><path d="M344.1 276.4H256c-11.3 0-20.4-9.1-20.4-20.4V98.2c0-11.3 9.1-20.4 20.4-20.4 11.3 0 20.4 9.1 20.4 20.4v137.4h67.7c11.3 0 20.4 9.1 20.4 20.4 0 11.3-9.1 20.4-20.4 20.4z"/></svg>',
-  }
+  },
 } as const;
 
 export const getApplication = (applicationName: string) => Object.values(APPLICATION).find(app => app.name === applicationName) ?? null;

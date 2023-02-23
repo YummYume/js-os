@@ -12,6 +12,7 @@ class TaskBar extends CustomElement {
   #currentTime = new Date();
 
   #currentTimeCallback: number | undefined;
+
   #currentDateCallback: number | undefined;
 
   #intlTimeFormat = this.formatDateTime();
@@ -90,7 +91,6 @@ class TaskBar extends CustomElement {
     window.addEventListener('storage', this.timeTask.bind(this));
   }
 
-
   timeTask() {
     const infoContainer = this.template.querySelector('#info');
 
@@ -101,55 +101,55 @@ class TaskBar extends CustomElement {
     clearInterval(this.#currentDateCallback);
 
     if (currentTimeSpan) {
-      if (localStorage.getItem('time') === "true") {
+      if (localStorage.getItem('time') === 'true') {
         this.#intlTimeFormat = this.formatDateTime();
         currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
-  
+
         this.#currentTimeCallback = setInterval(() => {
           this.#currentTime = new Date();
-  
+
           currentTimeSpan.textContent = this.#intlTimeFormat.format(this.#currentTime);
         }, 1000);
       } else {
-        currentTimeSpan.textContent = "";
+        currentTimeSpan.textContent = '';
       }
     }
 
     if (currentDateSpan) {
-      if (localStorage.getItem('date') === "true") {
+      if (localStorage.getItem('date') === 'true') {
         this.#intlDateFormat = this.formatDateTime(false);
         currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
-  
+
         this.#currentDateCallback = setInterval(() => {
           this.#currentTime = new Date();
-  
+
           // Check for new day
           if (this.#currentTime.getSeconds() === 0) {
             currentDateSpan.textContent = this.#intlDateFormat.format(this.#currentTime);
           }
         }, 1000);
       } else {
-        currentDateSpan.textContent = "";
+        currentDateSpan.textContent = '';
       }
     }
   }
 
-  formatDateTime (isTime: boolean = true): Intl.DateTimeFormat {
+  formatDateTime (isTime = true): Intl.DateTimeFormat {
     return isTime ? new Intl.DateTimeFormat(
       'en',
       {
-        hour: "numeric",
-        minute: localStorage.getItem('minute') === "true" ? "numeric" : undefined,
-        second: localStorage.getItem('second') === "true" ? "numeric" : undefined,
-        hour12: true 
+        hour: 'numeric',
+        minute: localStorage.getItem('minute') === 'true' ? 'numeric' : undefined,
+        second: localStorage.getItem('second') === 'true' ? 'numeric' : undefined,
+        hour12: true,
       },
     ) : new Intl.DateTimeFormat(
       'en',
       {
-        year: localStorage.getItem('year') === "true" ? "numeric" : undefined,
-        month: localStorage.getItem('month') === "true" ? "numeric" : undefined,
-        day: localStorage.getItem('day') === "true" ? "2-digit" : undefined,
-      }
+        year: localStorage.getItem('year') === 'true' ? 'numeric' : undefined,
+        month: localStorage.getItem('month') === 'true' ? 'numeric' : undefined,
+        day: localStorage.getItem('day') === 'true' ? '2-digit' : undefined,
+      },
     );
   }
 

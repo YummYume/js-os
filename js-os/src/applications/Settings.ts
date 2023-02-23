@@ -3,9 +3,9 @@ import htmlTemplate from '@templates/applications/Settings.html?raw';
 
 import Application from '@/Application';
 import APPLICATION from '@constants/application';
+import { isNull } from '@utils/tools';
 
 import type { Application as ApplicationType } from 'types/application';
-import { isNull } from '@utils/tools';
 
 class Settings extends Application implements ApplicationType {
   name = APPLICATION.SETTINGS.name;
@@ -13,16 +13,16 @@ class Settings extends Application implements ApplicationType {
   template = this.getShadow();
 
   static OPTIONS_AVAILABLE: string[] = [
-    "network",
-    "date",
-    "year",
-    "month",
-    "day",
-    "time",
-    "minute",
-    "second",
-    "battery"
-  ]
+    'network',
+    'date',
+    'year',
+    'month',
+    'day',
+    'time',
+    'minute',
+    'second',
+    'battery',
+  ];
 
   #options: NodeListOf<HTMLInputElement> | [] = [];
 
@@ -50,12 +50,12 @@ class Settings extends Application implements ApplicationType {
           if (option.dataset.setting) {
             const state = localStorage.getItem(option.dataset.setting);
             if (!isNull(state)) {
-              option.checked = state === "true";
+              option.checked = state === 'true';
             } else {
               option.checked = true;
               localStorage.setItem(option.dataset.setting, `${true}`);
             }
-          } 
+          }
 
           option.addEventListener('change', this.optionChange.bind(this));
         });
@@ -70,11 +70,9 @@ class Settings extends Application implements ApplicationType {
   }
 
   optionChange(event: Event) {
-    if (event.target instanceof HTMLInputElement) {
-      if (event.target.dataset && event.target.dataset.setting) {
-        localStorage.setItem(event.target.dataset.setting, `${event.target.checked}`);
-        window.dispatchEvent(new Event('storage'));
-      }
+    if (event.target instanceof HTMLInputElement && event.target.dataset.setting) {
+      localStorage.setItem(event.target.dataset.setting, `${event.target.checked}`);
+      window.dispatchEvent(new Event('storage'));
     }
   }
 }

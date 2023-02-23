@@ -1,16 +1,16 @@
 import App from '@templates/App.html?raw';
 
 import Calculator from '@/applications/Calculator';
+import Clock from '@/applications/Clock';
+import Settings from '@/applications/Settings';
 import Tictactoe from '@/applications/Tictactoe';
 import Battery from '@/components/Battery';
 import Network from '@/components/Network';
 import TaskBar from '@/components/TaskBar';
-import Settings from '@/applications/Settings';
-import Clock from '@/applications/Clock';
 import { getApplication } from '@constants/application';
+import { isNull } from '@utils/tools';
 
 import type { ApplicationComponent, ApplicationEventProps } from '@defs/application';
-import { isNull } from '@utils/tools';
 
 customElements.define('task-bar', TaskBar);
 customElements.define('battery-icon', Battery);

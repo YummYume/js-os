@@ -14,28 +14,41 @@ class Clock extends Application implements ApplicationType {
   #clock: number | null = null;
 
   #stopwatch: number | null = null;
-  #startStopwatch: number = 0;
-  #elapsedTime: number = 0;
+
+  #startStopwatch = 0;
+
+  #elapsedTime = 0;
 
   #btnStartWatch: HTMLButtonElement | null = null;
+
   #btnStopWatch: HTMLButtonElement | null = null;
+
   #btnResetWatch: HTMLButtonElement | null = null;
 
   #timer: number | null = null;
-  #startTimer: number = 0;
-  #endTimer: number = 0;
-  #remainingTime: number = 0;
+
+  #startTimer = 0;
+
+  #endTimer = 0;
+
+  #remainingTime = 0;
 
   #displayTimer: HTMLDivElement | null = null;
+
   #inputHours: HTMLInputElement | null = null;
+
   #inputMinutes: HTMLInputElement | null = null;
+
   #inputSeconds: HTMLInputElement | null = null;
 
   #btnStartTimer: HTMLButtonElement | null = null;
+
   #btnStopTimer: HTMLButtonElement | null = null;
+
   #btnResetTimer: HTMLButtonElement | null = null;
 
   #swapperPrevious: HTMLButtonElement | null = null;
+
   #swapperNext: HTMLButtonElement | null = null;
 
   constructor() {
@@ -99,9 +112,9 @@ class Clock extends Application implements ApplicationType {
       if (currentApp.previousElementSibling) {
         this.#swapperPrevious.style.display = 'block';
 
-        if (!currentApp.previousElementSibling.previousElementSibling || 
+        if (!currentApp.previousElementSibling.previousElementSibling ||
           currentApp.previousElementSibling.previousElementSibling.classList.contains('swapper-buttons')
-          ) {
+        ) {
           this.#swapperPrevious.style.display = 'none';
           this.#swapperNext.style.display = 'block';
         }
@@ -116,7 +129,7 @@ class Clock extends Application implements ApplicationType {
     if (!this.windowDiv || !this.#swapperNext || !this.#swapperPrevious) {
       return;
     }
-    
+
     const currentApp = this.windowDiv.querySelector('.active');
     if (currentApp) {
       if (currentApp.nextElementSibling) {
@@ -139,7 +152,7 @@ class Clock extends Application implements ApplicationType {
     const timer = this.windowDiv.querySelector('.timer');
 
     if (!timer) return;
-    
+
     this.#displayTimer = timer.querySelector('.display');
     this.#inputHours = timer.querySelector('.input-hours');
     this.#inputMinutes = timer.querySelector('.input-minutes');
@@ -157,27 +170,27 @@ class Clock extends Application implements ApplicationType {
   startTimer() {
     if (this.#timer) return;
 
-    if(!this.#inputMinutes || !this.#inputSeconds || !this.#inputHours || !this.#displayTimer) {
+    if (!this.#inputMinutes || !this.#inputSeconds || !this.#inputHours || !this.#displayTimer) {
       return;
     }
- 
+
     const hours = this.#inputHours.value ? parseInt(this.#inputHours.value) : 0;
     const minutes = this.#inputMinutes.value ? parseInt(this.#inputMinutes.value) : 0;
     const seconds = this.#inputSeconds.value ? parseInt(this.#inputSeconds.value) : 0;
     const duration = ((hours * 60 + minutes) * 60 + seconds) * 1000;
-  
+
     this.#startTimer = Date.now();
     this.#endTimer = this.#startTimer + (this.#remainingTime > 0  ? this.#remainingTime : duration);
     this.#timer = setInterval(this.updateTimerDisplay.bind(this), 10);
   }
-  
+
   stopTimer() {
     if (this.#timer) clearInterval(this.#timer);
     this.#timer = null;
   }
-  
+
   resetTimer() {
-    if(!this.#inputMinutes || !this.#inputSeconds || !this.#inputHours || !this.#displayTimer) {
+    if (!this.#inputMinutes || !this.#inputSeconds || !this.#inputHours || !this.#displayTimer) {
       return;
     }
 
@@ -189,14 +202,14 @@ class Clock extends Application implements ApplicationType {
     this.#inputMinutes.value = '0';
     this.#inputSeconds.value = '0';
   }
-  
+
   updateTimerDisplay() {
     if (!this.#displayTimer) return;
 
     this.#remainingTime = this.#endTimer - Date.now();
 
     if (this.#remainingTime <= 0) {
-      window.dispatchEvent(new CustomEvent<{ message: string }>("toast", { detail: { message: "Timer done !" } }));
+      window.dispatchEvent(new CustomEvent<{ message: string }>('toast', { detail: { message: 'Timer done !' } }));
 
       this.stopTimer();
       this.#displayTimer.textContent = '00:00:00.000';
@@ -284,7 +297,7 @@ class Clock extends Application implements ApplicationType {
     const secondEl = this.windowDiv.querySelector<HTMLSpanElement>('.second');
     const minuteEl = this.windowDiv.querySelector<HTMLSpanElement>('.minute');
 
-    if(!hoursEl || !secondEl || !minuteEl) {
+    if (!hoursEl || !secondEl || !minuteEl) {
       return;
     }
 

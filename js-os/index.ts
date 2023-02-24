@@ -10,6 +10,8 @@ import TaskBar from '@/components/TaskBar';
 import { getApplication } from '@constants/application';
 import { isNull } from '@utils/tools';
 
+import imgUrl from './assets/default_wallpaper.jpg';
+
 import type { ApplicationComponent, ApplicationEventProps } from '@defs/application';
 
 customElements.define('task-bar', TaskBar);
@@ -38,6 +40,19 @@ const root = document.body.querySelector('#root');
 if (!root) {
   throw new Error('Element #root not found.');
 }
+
+const desktop = root.querySelector('#desktop');
+
+if (!desktop) {
+  throw new Error('Element #desktop in element #root not found.');
+}
+
+const background = document.createElement('img');
+background.src = imgUrl;
+background.loading = 'lazy';
+background.alt = 'Desktop wallpaper';
+
+desktop.appendChild(background);
 
 window.addEventListener('open-window', (e) => {
   if (e instanceof CustomEvent) {

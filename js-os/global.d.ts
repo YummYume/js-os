@@ -36,3 +36,5 @@ interface Navigator {
   readonly mozConnection: NetworkInformation?;
   readonly navigator: NetworkInformation?;
 }
+
+declare module '*.jpg';

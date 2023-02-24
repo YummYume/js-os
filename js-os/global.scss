@@ -7,7 +7,9 @@ html,
 body,
 #root {
     height: 100vh;
-    width: 100vw;
+    height: 100dvh;
+    width: 100wv;
+    width: 100dvw;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -129,14 +131,20 @@ noscript {
     z-index: 999;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-  
+
+    @media screen and (max-width: $mobile-breakpoint) {
+        top: unset;
+        bottom: 1em;
+        right: 1em;
+    }
+
     &.show {
       opacity: 1;
     }
-  
+
     .toast-message {
       font-size: 1.2em;
       font-weight: bold;
     }
   }
-  
+

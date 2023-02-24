@@ -11,10 +11,12 @@
     animation: open-window 0.1s ease-in forwards;
     width: fit-content;
     overflow: auto;
-    min-height: 25rem;
-    min-width: 25rem;
+    min-height: 30rem;
+    min-width: 30rem;
 
     @media (max-width: $mobile-breakpoint) {
+        min-height: 20rem;
+        min-width: 20rem;
         animation: open-window-top 0.1s ease-in forwards;
     }
 
@@ -30,6 +32,10 @@
         height: 2rem;
         padding: 0.2rem;
         cursor: move;
+
+        @media (max-width: $mobile-breakpoint) {
+            background-color: $window-bg-blur-mobile;
+        }
 
         &_appname {
             color: #fff;
@@ -78,16 +84,20 @@
     &.fullscreen {
         resize: none;
         width: 100vw !important;
+        width: 100dvw !important;
         height: 94.5vh !important;
+        height: 94.5dvh !important;
         top: 0 !important;
         left: 0 !important;
     }
 
     @media (max-width: $mobile-breakpoint) {
         bottom: calc((100vh - 75vh) / 2);
+        bottom: calc((100dvh - 75dvh) / 2);
         left: 0;
         width: 100%;
         height: 75vh;
+        height: 75dvh;
         min-height: unset;
         min-width: unset;
     }
@@ -96,10 +106,10 @@
         flex-grow: 1;
         height: 100%;
         padding: 0.5rem;
-        align-items: center;
         display: flex;
         justify-content: center;
         position: relative;
+        flex-direction: column;
     }
 }
 

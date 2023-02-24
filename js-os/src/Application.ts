@@ -74,6 +74,10 @@ class Application extends CustomElement implements ApplicationType {
       appNameHolder.textContent = this.name;
     }
 
+    if (this.windowDiv) {
+      this.windowDiv.style.zIndex = '1';
+    }
+
     this.runApp();
   }
 
@@ -176,7 +180,7 @@ class Application extends CustomElement implements ApplicationType {
     }
   }
 
-  private resetPosition (x = '0%', y = '0%', width = '100vw', height = '94vh') {
+  private resetPosition (x = '0%', y = '0%', width = '100dvw', height = '94dvh') {
     if (!this.windowDiv) return;
 
     this.windowDiv.style.left = x;

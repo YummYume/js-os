@@ -51,6 +51,8 @@ class Clock extends Application implements ApplicationType {
 
   #swapperNext: HTMLButtonElement | null = null;
 
+  #appTitle: HTMLHeadingElement | null = null;
+
   constructor() {
     super();
     this.appendStyle(styles);
@@ -71,6 +73,7 @@ class Clock extends Application implements ApplicationType {
 
         this.#swapperPrevious = this.windowDiv.querySelector('[data-clock-swapper="previous"]');
         this.#swapperNext = this.windowDiv.querySelector('[data-clock-swapper="next"]');
+        this.#appTitle = this.windowDiv.querySelector('#clock-app-name');
 
         this.#swapperPrevious?.addEventListener('click', this.swapPrevious.bind(this));
         this.#swapperNext?.addEventListener('click', this.swapNext.bind(this));
@@ -109,18 +112,21 @@ class Clock extends Application implements ApplicationType {
     const currentApp = this.windowDiv.querySelector('.active');
 
     if (currentApp) {
+      let newApp = null;
+
       if (currentApp.previousElementSibling) {
-        this.#swapperPrevious.style.display = 'block';
+        newApp = currentApp.previousElementSibling;
+      } else {
+        newApp = currentApp.parentElement?.lastElementChild;
+      }
 
-        if (!currentApp.previousElementSibling.previousElementSibling ||
-          currentApp.previousElementSibling.previousElementSibling.classList.contains('swapper-buttons')
-        ) {
-          this.#swapperPrevious.style.display = 'none';
-          this.#swapperNext.style.display = 'block';
-        }
-
+      if (newApp) {
         currentApp.classList.remove('active');
-        currentApp.previousElementSibling.classList.add('active');
+        newApp.classList.add('active');
+
+        if (this.#appTitle && newApp instanceof HTMLElement && newApp.dataset.clockName) {
+          this.#appTitle.textContent = newApp.dataset.clockName;
+        }
       }
     }
   }
@@ -131,17 +137,23 @@ class Clock extends Application implements ApplicationType {
     }
 
     const currentApp = this.windowDiv.querySelector('.active');
+
     if (currentApp) {
+      let newApp = null;
+
       if (currentApp.nextElementSibling) {
-        this.#swapperNext.style.display = 'block';
+        newApp = currentApp.nextElementSibling;
+      } else {
+        newApp = currentApp.parentElement?.firstElementChild;
+      }
 
-        if (!currentApp.nextElementSibling.nextElementSibling) {
-          this.#swapperPrevious.style.display = 'block';
-          this.#swapperNext.style.display = 'none';
-        }
-
+      if (newApp) {
         currentApp.classList.remove('active');
-        currentApp.nextElementSibling.classList.add('active');
+        newApp.classList.add('active');
+
+        if (this.#appTitle && newApp instanceof HTMLElement && newApp.dataset.clockName) {
+          this.#appTitle.textContent = newApp.dataset.clockName;
+        }
       }
     }
   }
@@ -211,6 +223,10 @@ class Clock extends Application implements ApplicationType {
     if (this.#remainingTime <= 0) {
       window.dispatchEvent(new CustomEvent<{ message: string }>('toast', { detail: { message: 'Timer done !' } }));
 
+      if (typeof navigator.vibrate === 'function') {
+        navigator.vibrate(200);
+      }
+
       this.stopTimer();
       this.#displayTimer.textContent = '00:00:00.000';
 
@@ -268,10 +284,10 @@ class Clock extends Application implements ApplicationType {
     if (!stopwatch) return;
 
     const display = stopwatch.querySelector('.display');
-
     const minutes = Math.floor(this.#elapsedTime / 60000);
     const seconds = Math.floor((this.#elapsedTime % 60000) / 1000);
     const milliseconds = this.#elapsedTime % 1000;
+
     if (display) {
       display.textContent = `${this.padZero(minutes)}:${this.padZero(seconds)}.${this.padZero(milliseconds, 3)}`;
     }

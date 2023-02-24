@@ -43,7 +43,6 @@ class TaskBar extends CustomElement {
         // System for class item
         const match = this.regex.exec(item);
         const classItem = match ? match[0].split(';') : [];
-
         const application = getApplication(item.split('|')[0]);
 
         if (application) {
@@ -54,6 +53,7 @@ class TaskBar extends CustomElement {
           navItem.ariaLabel = `open ${ application.name }`;
           navItem.addEventListener('click', () => {
             const app = document.querySelector(application.component);
+
             window.dispatchEvent(new CustomEvent<ApplicationEventProps>( app ? 'stash-window' : 'open-window', { detail: { name: application.name } }));
             if (app) window.dispatchEvent(new CustomEvent<ApplicationEventProps>('select-window', { detail: { name: application.name } }));
           });
@@ -61,6 +61,7 @@ class TaskBar extends CustomElement {
           window.addEventListener('close-window', (e: Event) => {
             if (e instanceof CustomEvent) {
               const event = e as CustomEvent<ApplicationEventProps>;
+
               if (event.detail.name === application.name) {
                 navItem.classList.contains('icon-active') ? navItem.classList.remove('icon-active') : null;
               }
@@ -70,6 +71,7 @@ class TaskBar extends CustomElement {
           window.addEventListener('open-window', (e: Event) => {
             if (e instanceof CustomEvent) {
               const event = e as CustomEvent<ApplicationEventProps>;
+
               if (event.detail.name === application.name) {
                 !navItem.classList.contains('icon-active') ? navItem.classList.add('icon-active') : null;
               }

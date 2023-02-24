@@ -1,52 +1,53 @@
 <div class="container">
-  <div class="swapper">
     <div class="swapper-buttons">
-      <button data-clock-swapper="previous" aria-label="previous">
-        <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8Zm8 4V9h5V7H8V4H7L3 8l4 4h1Z" fill="#030708" fill-rule="evenodd"/></svg>
-      </button>
-      <button data-clock-swapper="next" aria-label="next">
-        <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0ZM8 4v3H3v2h5v3h1l4-4-4-4H8Z" fill="#030708" fill-rule="evenodd"/></svg>
-      </button>
+        <button data-clock-swapper="previous" type="button" aria-label="Previous page">
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8Zm8 4V9h5V7H8V4H7L3 8l4 4h1Z" fill="#030708" fill-rule="evenodd"/></svg>
+        </button>
+        <h2 id="clock-app-name">Clock</h2>
+        <button data-clock-swapper="next" type="button" aria-label="Next page">
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0ZM8 4v3H3v2h5v3h1l4-4-4-4H8Z" fill="#030708" fill-rule="evenodd"/></svg>
+        </button>
     </div>
-    <div class="clock active" data-clock-app="clock">
-      <div class="wrap">
-        <span class="hour"></span>
-        <span class="minute"></span>
-        <span class="second"></span>
-        <span class="dot"></span>
-      </div>
+    <div class="swapper">
+        <div class="clock active" data-clock-app="clock" data-clock-name="Clock">
+            <div class="wrap">
+                <span class="hour"></span>
+                <span class="minute"></span>
+                <span class="second"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+        <div class="stopwatch" data-clock-app="stopwatch" data-clock-name="Stopwatch">
+            <div class="wrap">
+                <div class="display">
+                    <p class="current-time">00:00.000</p>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="start">Start</button>
+                    <button type="button" class="stop">Stop</button>
+                    <button type="button" class="reset">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="timer" data-clock-app="timer" data-clock-name="Timer">
+            <div class="wrap">
+                <div class="display">
+                    <p class="current-time">00:00:00.000</p>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="start">Start</button>
+                    <button type="button" class="stop">Stop</button>
+                    <button type="button" class="reset">Reset</button>
+                </div>
+                <div class="input">
+                    <label for="hours">Hours</label>
+                    <input id="hours" type="number" class="input-hours" min="0" max="23" value="0" placeholder="Hours">
+                    <label for="minutes">Minutes</label>
+                    <input id="minutes" type="number" class="input-minutes" min="0" max="59" value="0" placeholder="Minutes">
+                    <label for="seconds">Seconds</label>
+                    <input id="seconds" type="number" class="input-seconds" min="0" max="59" value="0" placeholder="Seconds">
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="stopwatch" data-clock-app="stopwatch">
-      <div class="wrap">
-        <div class="display">
-          <p class="current-time">00:00.000</p>
-        </div>
-        <div class="buttons">
-          <button class="start">Start</button>
-          <button class="stop">Stop</button>
-          <button class="reset">Reset</button>
-        </div>
-      </div>
-    </div>
-    <div class="timer" data-clock-app="timer">
-      <div class="wrap">
-        <div class="display">
-          <p class="current-time">00:00:00.000</p>
-        </div>
-        <div class="buttons">
-          <button class="start">Start</button>
-          <button class="stop">Stop</button>
-          <button class="reset">Reset</button>
-        </div>
-        <div class="input">
-          <label for="">hours</label>
-          <input type="number" class="input-hours" min="0" max="23" value="0" placeholder="Hours">
-          <label for="">minutes</label>
-          <input type="number" class="input-minutes" min="0" max="59" value="0" placeholder="Minutes">
-          <label for="">seconds</label>
-          <input type="number" class="input-seconds" min="0" max="59" value="0" placeholder="Seconds">
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

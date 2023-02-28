@@ -96,10 +96,4 @@
         justify-content: space-around;
         text-align: center;
     }
-
-    #current-date {
-        @media screen and (max-width: $mobile-breakpoint) {
-            display: none;
-        }
-    }
 }

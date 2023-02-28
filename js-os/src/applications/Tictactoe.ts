@@ -32,6 +32,8 @@ class Tictactoe extends Application implements ApplicationType {
 
   #winner: 'cross' | 'circle' | null = null;
 
+  #score = { cross: 0, circle: 0, draw: 0 };
+
   constructor() {
     super();
     this.appendStyle(styles);
@@ -92,9 +94,22 @@ class Tictactoe extends Application implements ApplicationType {
             this.reset();
           };
           const winnerText = winner.querySelector('.match-winner');
+          const matchScore = winner.querySelector('.match-score');
+
+          this.#score[this.#winner ?? 'draw'] += 1;
 
           if (winnerText) {
-            winnerText.textContent = gameStatus === 'win' ? `${this.#winner} wins` : 'Draw';
+            if (gameStatus === 'win') {
+              winnerText.textContent = `${this.#winner} wins`;
+              this.vibrate([30, 20, 30]);
+            } else {
+              winnerText.textContent = 'Draw';
+              this.vibrate([50, 20, 50, 20, 50]);
+            }
+          }
+
+          if (matchScore) {
+            matchScore.textContent = `Cross : ${this.#score.cross}, Circle : ${this.#score.circle}, Draw : ${this.#score.draw}`;
           }
 
           winner.style.display = 'flex';
@@ -138,6 +153,7 @@ class Tictactoe extends Application implements ApplicationType {
 
     // There is no more cell
     if (!this.template.querySelector<HTMLDivElement>(`[data-cell-type=""]`)) {
+      this.vibrate([100, 50, 100, 50, 100]);
       return 'loose';
     }
 

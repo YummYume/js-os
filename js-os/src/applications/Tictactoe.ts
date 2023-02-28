@@ -24,8 +24,6 @@ class Tictactoe extends Application implements ApplicationType {
 
   template = this.getShadow();
 
-  #vibrateOn = false;
-
   #alternateChoice = false;
 
   #cells: NodeListOf<HTMLDivElement> | [] = [];
@@ -33,6 +31,8 @@ class Tictactoe extends Application implements ApplicationType {
   #buttonReset: HTMLButtonElement | null = null;
 
   #winner: 'cross' | 'circle' | null = null;
+
+  #score = { cross: 0, circle: 0, draw: 0 };
 
   constructor() {
     super();
@@ -53,9 +53,6 @@ class Tictactoe extends Application implements ApplicationType {
       if (contentWindow && appTemplate) {
         contentWindow.appendChild(appTemplate);
         this.tictactoe(this.windowDiv);
-
-        this.onSettingChange();
-        window.addEventListener('storage', this.onSettingChange.bind(this));
       }
     }
   }
@@ -97,6 +94,9 @@ class Tictactoe extends Application implements ApplicationType {
             this.reset();
           };
           const winnerText = winner.querySelector('.match-winner');
+          const matchScore = winner.querySelector('.match-score');
+
+          this.#score[this.#winner ?? 'draw'] += 1;
 
           if (winnerText) {
             if (gameStatus === 'win') {
@@ -106,6 +106,10 @@ class Tictactoe extends Application implements ApplicationType {
               winnerText.textContent = 'Draw';
               this.vibrate([50, 20, 50, 20, 50]);
             }
+          }
+
+          if (matchScore) {
+            matchScore.textContent = `Cross : ${this.#score.cross}, Circle : ${this.#score.circle}, Draw : ${this.#score.draw}`;
           }
 
           winner.style.display = 'flex';
@@ -175,18 +179,7 @@ class Tictactoe extends Application implements ApplicationType {
     return false;
   }
 
-  vibrate(pattern: number | number[] = 200) {
-    if (typeof navigator.vibrate === 'function' && this.#vibrateOn) {
-      navigator.vibrate(pattern);
-    }
-  }
-
-  onSettingChange() {
-    this.#vibrateOn = localStorage.getItem('vibrate') === 'true';
-  }
-
   stop() {
-    window.removeEventListener('storage', this.onSettingChange.bind(this));
     this.#buttonReset?.addEventListener('click', this.reset.bind(this));
     this.#cells.forEach((cell) => {
       cell.removeEventListener('mousedown', this.callCell.bind(this));

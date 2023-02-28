@@ -35,6 +35,8 @@ class Application extends CustomElement implements ApplicationType {
 
   buttonStash: HTMLButtonElement | null = null;
 
+  vibrateOn = false;
+
   constructor() {
     super();
     this.setTemplate(htmlTemplate);
@@ -57,8 +59,12 @@ class Application extends CustomElement implements ApplicationType {
       this.buttonStash?.addEventListener('click',  this.stash.bind(this), false);
 
       window.addEventListener('select-window', this.lastSelected.bind(this), false);
+      window.addEventListener('keydown', this.createDrag.bind(this), false);
+      window.addEventListener('keyup', this.removeDrag.bind(this), false);
+      window.addEventListener('storage', this.onSettingChange.bind(this));
 
       this.windowDiv.addEventListener('mousedown', this.select.bind(this), false);
+      this.windowDiv.addEventListener('click', this.handleClickVibration.bind(this), false);
 
       this.windowToolbar?.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
       this.windowToolbar?.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
@@ -66,6 +72,8 @@ class Application extends CustomElement implements ApplicationType {
       this.windowToolbar?.addEventListener('touchstart', this.handleMouseDown.bind(this), false);
       this.windowToolbar?.addEventListener('touchmove', this.handleMouseMove.bind(this), false);
       this.windowToolbar?.addEventListener('touchend', this.handleMouseUp.bind(this), false);
+
+      this.onSettingChange();
     }
 
     const appNameHolder = this.windowToolbar?.querySelector('span.window-toolbar_appname');
@@ -89,6 +97,8 @@ class Application extends CustomElement implements ApplicationType {
     this.buttonStash?.removeEventListener('click', this.stash.bind(this), false);
 
     window.removeEventListener('select-window', this.lastSelected.bind(this), false);
+    window.removeEventListener('keydown', this.createDrag.bind(this), false);
+    window.removeEventListener('storage', this.onSettingChange.bind(this));
 
     this.windowDiv.removeEventListener('mousedown', this.select.bind(this), false);
 
@@ -102,24 +112,6 @@ class Application extends CustomElement implements ApplicationType {
     this.stopApp();
   }
 
-  removeMouseEvent() {
-    this.windowDiv?.removeEventListener('mousedown', this.handleMouseDown.bind(this), false);
-    this.windowDiv?.removeEventListener('mousemove', this.handleMouseMove.bind(this), false);
-    this.windowDiv?.removeEventListener('mouseup', this.handleMouseUp.bind(this), false);
-    this.windowDiv?.removeEventListener('touchstart', this.handleMouseDown.bind(this), false);
-    this.windowDiv?.removeEventListener('touchmove', this.handleMouseMove.bind(this), false);
-    this.windowDiv?.removeEventListener('touchend', this.handleMouseUp.bind(this), false);
-  }
-
-  addMouseEvent() {
-    this.windowDiv?.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
-    this.windowDiv?.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
-    this.windowDiv?.addEventListener('mouseup', this.handleMouseUp.bind(this), false);
-    this.windowDiv?.addEventListener('touchstart', this.handleMouseDown.bind(this), false);
-    this.windowDiv?.addEventListener('touchmove', this.handleMouseMove.bind(this), false);
-    this.windowDiv?.addEventListener('touchend', this.handleMouseUp.bind(this), false);
-  }
-
   // Event for closing the app
   close() {
     this.eventDispatcher('close-window');
@@ -131,12 +123,8 @@ class Application extends CustomElement implements ApplicationType {
   }
 
   // Event when the window is selected
-  select(e: Event) {
+  select() {
     this.eventDispatcher('select-window');
-
-    if (e instanceof MouseEvent) {
-      if (e.altKey) this.addMouseEvent();
-    }
   }
 
   eventDispatcher(event: string) {
@@ -246,9 +234,66 @@ class Application extends CustomElement implements ApplicationType {
   private handleMouseUp = () => {
     this.moving = false;
     document.body.style.userSelect = 'initial';
-
-    this.removeMouseEvent();
   };
+
+  private createDrag = (e: KeyboardEvent) => {
+    if (!this.windowContent || !e.ctrlKey) {
+      return;
+    }
+
+    const drag = document.createElement('div');
+    drag.classList.add('drag');
+
+    drag.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
+    drag.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
+    drag.addEventListener('mouseup', this.handleMouseUp.bind(this), false);
+    drag.addEventListener('touchstart', this.handleMouseDown.bind(this), false);
+    drag.addEventListener('touchmove', this.handleMouseMove.bind(this), false);
+    drag.addEventListener('touchend', this.handleMouseUp.bind(this), false);
+
+    this.windowContent.append(drag);
+  };
+
+  private removeDrag = (e: KeyboardEvent) => {
+    if (!this.windowContent || e.ctrlKey) {
+      return;
+    }
+
+    const drag = this.windowContent.querySelector('div.drag');
+
+    if (drag && drag instanceof HTMLDivElement) {
+      drag.removeEventListener('mousedown', this.handleMouseDown.bind(this), false);
+      drag.removeEventListener('mousemove', this.handleMouseMove.bind(this), false);
+      drag.removeEventListener('mouseup', this.handleMouseUp.bind(this), false);
+      drag.removeEventListener('touchstart', this.handleMouseDown.bind(this), false);
+      drag.removeEventListener('touchmove', this.handleMouseMove.bind(this), false);
+      drag.removeEventListener('touchend', this.handleMouseUp.bind(this), false);
+
+      drag.remove();
+    }
+  };
+
+  private handleClickVibration({ target }: MouseEvent) {
+    if (!(target instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    if (target.disabled || !this.vibrateOn) {
+      return;
+    }
+
+    this.vibrate(50);
+  }
+
+  onSettingChange() {
+    this.vibrateOn = localStorage.getItem('vibrate') === 'true';
+  }
+
+  vibrate(pattern: number | number[] = 200) {
+    if (typeof navigator.vibrate === 'function' && this.vibrateOn) {
+      navigator.vibrate(pattern);
+    }
+  }
 }
 
 export default Application;

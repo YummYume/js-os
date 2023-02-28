@@ -24,6 +24,8 @@ class Tictactoe extends Application implements ApplicationType {
 
   template = this.getShadow();
 
+  #vibrateOn = false;
+
   #alternateChoice = false;
 
   #cells: NodeListOf<HTMLDivElement> | [] = [];
@@ -51,6 +53,9 @@ class Tictactoe extends Application implements ApplicationType {
       if (contentWindow && appTemplate) {
         contentWindow.appendChild(appTemplate);
         this.tictactoe(this.windowDiv);
+
+        this.onSettingChange();
+        window.addEventListener('storage', this.onSettingChange.bind(this));
       }
     }
   }
@@ -94,7 +99,13 @@ class Tictactoe extends Application implements ApplicationType {
           const winnerText = winner.querySelector('.match-winner');
 
           if (winnerText) {
-            winnerText.textContent = gameStatus === 'win' ? `${this.#winner} wins` : 'Draw';
+            if (gameStatus === 'win') {
+              winnerText.textContent = `${this.#winner} wins`;
+              this.vibrate([30, 20, 30]);
+            } else {
+              winnerText.textContent = 'Draw';
+              this.vibrate([50, 20, 50, 20, 50]);
+            }
           }
 
           winner.style.display = 'flex';
@@ -138,6 +149,7 @@ class Tictactoe extends Application implements ApplicationType {
 
     // There is no more cell
     if (!this.template.querySelector<HTMLDivElement>(`[data-cell-type=""]`)) {
+      this.vibrate([100, 50, 100, 50, 100]);
       return 'loose';
     }
 
@@ -163,7 +175,18 @@ class Tictactoe extends Application implements ApplicationType {
     return false;
   }
 
+  vibrate(pattern: number | number[] = 200) {
+    if (typeof navigator.vibrate === 'function' && this.#vibrateOn) {
+      navigator.vibrate(pattern);
+    }
+  }
+
+  onSettingChange() {
+    this.#vibrateOn = localStorage.getItem('vibrate') === 'true';
+  }
+
   stop() {
+    window.removeEventListener('storage', this.onSettingChange.bind(this));
     this.#buttonReset?.addEventListener('click', this.reset.bind(this));
     this.#cells.forEach((cell) => {
       cell.removeEventListener('mousedown', this.callCell.bind(this));

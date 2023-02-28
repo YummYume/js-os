@@ -22,6 +22,7 @@ class Settings extends Application implements ApplicationType {
     'minute',
     'second',
     'battery',
+    'vibrate',
   ];
 
   #options: NodeListOf<HTMLInputElement> | [] = [];

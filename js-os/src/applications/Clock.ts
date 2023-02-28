@@ -11,6 +11,8 @@ class Clock extends Application implements ApplicationType {
 
   template = this.getShadow();
 
+  #vibrateOn = false;
+
   #clock: number | null = null;
 
   #stopwatch: number | null = null;
@@ -83,6 +85,9 @@ class Clock extends Application implements ApplicationType {
 
         this.stopwatchEngine();
         this.timerEngine();
+
+        this.onSettingChange();
+        window.addEventListener('storage', this.onSettingChange.bind(this));
       }
     }
   }
@@ -102,6 +107,7 @@ class Clock extends Application implements ApplicationType {
     this.#btnStartTimer?.removeEventListener('click', this.startTimer.bind(this), false);
     this.#btnStopTimer?.removeEventListener('click', this.stopTimer.bind(this), false);
     this.#btnResetTimer?.removeEventListener('click', this.resetTimer.bind(this), false);
+    window.removeEventListener('storage', this.onSettingChange.bind(this));
   }
 
   swapPrevious() {
@@ -222,11 +228,8 @@ class Clock extends Application implements ApplicationType {
 
     if (this.#remainingTime <= 0) {
       window.dispatchEvent(new CustomEvent<{ message: string }>('toast', { detail: { message: 'Timer done !' } }));
-
-      if (typeof navigator.vibrate === 'function') {
-        navigator.vibrate(200);
-      }
-
+      this.vibrate();
+    
       this.stopTimer();
       this.#displayTimer.textContent = '00:00:00.000';
 
@@ -301,6 +304,16 @@ class Clock extends Application implements ApplicationType {
       padded = '0' + padded;
     }
     return padded;
+  }
+
+  vibrate(pattern: number | number[] = 200) {
+    if (typeof navigator.vibrate === 'function' && this.#vibrateOn) {
+      navigator.vibrate(pattern);
+    }
+  }
+
+  onSettingChange() {
+    this.#vibrateOn = localStorage.getItem('vibrate') === 'true';
   }
 
   // Clock

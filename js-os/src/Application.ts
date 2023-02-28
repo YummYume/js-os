@@ -102,6 +102,24 @@ class Application extends CustomElement implements ApplicationType {
     this.stopApp();
   }
 
+  removeMouseEvent() {
+    this.windowDiv?.removeEventListener('mousedown', this.handleMouseDown.bind(this), false);
+    this.windowDiv?.removeEventListener('mousemove', this.handleMouseMove.bind(this), false);
+    this.windowDiv?.removeEventListener('mouseup', this.handleMouseUp.bind(this), false);
+    this.windowDiv?.removeEventListener('touchstart', this.handleMouseDown.bind(this), false);
+    this.windowDiv?.removeEventListener('touchmove', this.handleMouseMove.bind(this), false);
+    this.windowDiv?.removeEventListener('touchend', this.handleMouseUp.bind(this), false);
+  }
+
+  addMouseEvent() {
+    this.windowDiv?.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
+    this.windowDiv?.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
+    this.windowDiv?.addEventListener('mouseup', this.handleMouseUp.bind(this), false);
+    this.windowDiv?.addEventListener('touchstart', this.handleMouseDown.bind(this), false);
+    this.windowDiv?.addEventListener('touchmove', this.handleMouseMove.bind(this), false);
+    this.windowDiv?.addEventListener('touchend', this.handleMouseUp.bind(this), false);
+  }
+
   // Event for closing the app
   close() {
     this.eventDispatcher('close-window');
@@ -113,8 +131,12 @@ class Application extends CustomElement implements ApplicationType {
   }
 
   // Event when the window is selected
-  select() {
+  select(e: Event) {
     this.eventDispatcher('select-window');
+
+    if (e instanceof MouseEvent) {
+      if (e.altKey) this.addMouseEvent();
+    }
   }
 
   eventDispatcher(event: string) {
@@ -192,7 +214,11 @@ class Application extends CustomElement implements ApplicationType {
   private handleMouseDown = (e: MouseEvent | TouchEvent) => {
     if (!this.windowDiv || window.screen.width < BREAKPOINTS.MOBILE) return;
 
-    if (e.target !== e.currentTarget) return;
+    if (e.target !== e.currentTarget) {
+      if (!e.altKey) {
+        return;
+      }
+    }
 
     if (this.windowDiv.classList.contains('fullscreen')) return;
 
@@ -220,6 +246,8 @@ class Application extends CustomElement implements ApplicationType {
   private handleMouseUp = () => {
     this.moving = false;
     document.body.style.userSelect = 'initial';
+
+    this.removeMouseEvent();
   };
 }
 

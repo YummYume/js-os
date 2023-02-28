@@ -88,12 +88,12 @@ class TaskBar extends CustomElement {
       });
     }
 
-    this.timeTask();
+    this.onSettingsChange();
 
-    window.addEventListener('storage', this.timeTask.bind(this));
+    window.addEventListener('storage', this.onSettingsChange.bind(this));
   }
 
-  timeTask() {
+  onSettingsChange() {
     const infoContainer = this.template.querySelector('#info');
 
     const currentTimeSpan = infoContainer?.querySelector('#current-time');
@@ -158,6 +158,7 @@ class TaskBar extends CustomElement {
   disconnectedCallback() {
     clearInterval(this.#currentTimeCallback);
     clearInterval(this.#currentDateCallback);
+    window.removeEventListener('storage', this.onSettingsChange.bind(this));
   }
 
   static get observedAttributes() {

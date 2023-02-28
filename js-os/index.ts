@@ -7,6 +7,7 @@ import Tictactoe from '@/applications/Tictactoe';
 import Battery from '@/components/Battery';
 import Network from '@/components/Network';
 import TaskBar from '@/components/TaskBar';
+import Vibrate from '@/components/Vibrate';
 import { getApplication } from '@constants/application';
 import { isNull } from '@utils/tools';
 
@@ -17,6 +18,7 @@ import type { ApplicationComponent, ApplicationEventProps } from '@defs/applicat
 customElements.define('task-bar', TaskBar);
 customElements.define('battery-icon', Battery);
 customElements.define('network-icon', Network);
+customElements.define('vibrate-icon', Vibrate);
 customElements.define('calculator-app', Calculator);
 customElements.define('tictactoe-app', Tictactoe);
 customElements.define('settings-app', Settings);
